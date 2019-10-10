@@ -2,6 +2,10 @@ package com.belatrix.interns.StockAPIBackend.entities;
 
 import java.util.Date;
 
+/**
+ * @author fbalsas
+ */
+
 public class Product {
 	private int id;
 	private String name;

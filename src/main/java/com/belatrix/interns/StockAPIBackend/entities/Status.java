@@ -1,5 +1,9 @@
 package com.belatrix.interns.StockAPIBackend.entities;
 
+/**
+ * @author fbalsas
+ */
+
 public enum Status {
 	A("Aproved"),
 	R("Rejected"),

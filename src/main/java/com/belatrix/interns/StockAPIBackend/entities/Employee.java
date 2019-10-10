@@ -1,5 +1,9 @@
 package com.belatrix.interns.StockAPIBackend.entities;
 
+/**
+ * @author fbalsas
+ */
+
 public class Employee{
 	private int id;
 	private String name;

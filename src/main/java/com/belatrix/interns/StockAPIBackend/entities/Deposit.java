@@ -2,6 +2,10 @@ package com.belatrix.interns.StockAPIBackend.entities;
 
 import java.util.List;
 
+/**
+ * @author fbalsas
+ */
+
 public class Deposit {
 	private List<Product> stockedProducts;
 

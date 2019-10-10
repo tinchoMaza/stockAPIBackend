@@ -2,6 +2,10 @@ package com.belatrix.interns.StockAPIBackend.entities;
 
 import java.util.List;
 
+/**
+ * @author fbalsas
+ */
+
 public class Order {
 	private int idOrder;
 	private List<Product> orderedProducts;

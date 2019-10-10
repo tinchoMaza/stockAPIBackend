@@ -1,5 +1,9 @@
 package com.belatrix.interns.StockAPIBackend.entities;
 
+/**
+ * @author fbalsas
+ */
+
 public class Supplier {
 	private int idSupplier;
 	private String name;
