@@ -3,14 +3,32 @@ package com.belatrix.interns.StockAPIBackend.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.stereotype.Repository;
+
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Repository;
+
 import com.belatrix.interns.StockAPIBackend.entities.Product;
 
 /**
  * @author fbalsas
  */
 
+@Repository
 public class DepositRepositoryImplem implements DepositRepository{
 
+	private final MongoOperations mongoOp;
+	
+	@Autowired
+	public DepositRepositoryImplem(MongoOperations mongoOperations) {
+		this.mongoOp = mongoOperations;
+	}
+	
 	/**
 	 * @author fbalsas
 	 */
@@ -22,8 +40,8 @@ public class DepositRepositoryImplem implements DepositRepository{
 
 	@Override
 	public Optional<List<Product>> getAllProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Product> prods = this.mongoOp.find(new Query(), Product.class);
+		return  Optional.ofNullable(prods);
 	}
 
 	@Override

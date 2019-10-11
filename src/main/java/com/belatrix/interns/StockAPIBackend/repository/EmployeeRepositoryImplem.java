@@ -23,8 +23,8 @@ public class EmployeeRepositoryImplem implements EmployeeRepository {
 	}
 
 	public Optional<List<Employee>> getAllEmployees() {
-		List<Employee> players = this.mongoOp.find(new Query(), Employee.class);
-		return Optional.ofNullable(players);
+		List<Employee> emps = this.mongoOp.find(new Query(), Employee.class);
+		return Optional.ofNullable(emps);
 	}
 
 	public Optional<Employee> findById(String id) {
