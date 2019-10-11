@@ -1,4 +1,4 @@
-package com.belatrix.interns.StockAPIBackend.dao;
+package com.belatrix.interns.StockAPIBackend.repository;
 
 import com.belatrix.interns.StockAPIBackend.entities.Product;
 
@@ -6,7 +6,7 @@ import com.belatrix.interns.StockAPIBackend.entities.Product;
  * @author fbalsas
  */
 
-public interface DepositDAO{
+public interface DepositRepository{
 	
 	public boolean existReserveStock(Product producto);
 	
