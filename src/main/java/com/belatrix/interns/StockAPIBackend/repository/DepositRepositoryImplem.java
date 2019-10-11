@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import com.belatrix.interns.StockAPIBackend.entities.Employee;
 import com.belatrix.interns.StockAPIBackend.entities.Product;
 
 /**
@@ -58,20 +59,20 @@ public class DepositRepositoryImplem implements DepositRepository{
 
 	@Override
 	public Product saveProduct(Product p) {
-		// TODO Auto-generated method stub
-		return null;
+		this.mongoOp.save(p);
+		return findById(p.getId()).get();
 	}
 
 	@Override
-	public Object deleteProduct(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public void deleteProduct(String id) {
+		ObjectId _id = new ObjectId(id);
+		this.mongoOp.findAndRemove(new Query(Criteria.where("_id").is(_id)), Product.class);
 	}
 
 	@Override
-	public Object updateProduct(Product p) {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateProduct(Product p) {
+		//el save tambien hace el update. HAY QUE PASARLE EL ID SI O SI !!
+		this.mongoOp.save(p);
 	}
 
 }
