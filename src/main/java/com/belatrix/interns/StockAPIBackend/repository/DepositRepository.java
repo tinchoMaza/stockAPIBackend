@@ -21,8 +21,8 @@ public interface DepositRepository{
 
 	public Product saveProduct(Product p);
 
-	public Object deleteProduct(String id);
+	public void deleteProduct(String id);
 
-	public Object updateProduct(Product p);
+	public void updateProduct(Product p);
 	
 }
