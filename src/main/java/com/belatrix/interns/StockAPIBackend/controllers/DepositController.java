@@ -69,6 +69,16 @@ public class DepositController {
 		return ResponseEntity.ok(allStock);
 	}
 	
+
+	@GetMapping("/products/{id}")
+	public ResponseEntity<Product> findById(@PathVariable ("id") String id){
+		try {
+			return ResponseEntity.ok(depServ.findById(id));
+		} catch (ProductException e) {
+			return ResponseEntity.notFound().build();
+		}
+    }
+
 	@PostMapping("/")
 	public ResponseEntity<Product> saveProduct(@RequestBody @Valid Product p){
 		// no hace falta pasar el id, mongo lo asigna solo y lo devuelve solo
@@ -85,6 +95,7 @@ public class DepositController {
 	public ResponseEntity<Void> deleteProduct(@PathVariable String _id){
 		depServ.deleteProduct(_id);
 		return ResponseEntity.noContent().build();
+
 	}
 	
 }

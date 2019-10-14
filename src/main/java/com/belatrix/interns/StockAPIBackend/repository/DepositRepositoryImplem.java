@@ -47,8 +47,9 @@ public class DepositRepositoryImplem implements DepositRepository{
 
 	@Override
 	public Optional<Product> findById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		ObjectId _id = new ObjectId(id);
+		Product product = this.mongoOp.findOne(new Query(Criteria.where("_id").is(_id)), Product.class);
+	    return Optional.ofNullable(product);
 	}
 
 	@Override
