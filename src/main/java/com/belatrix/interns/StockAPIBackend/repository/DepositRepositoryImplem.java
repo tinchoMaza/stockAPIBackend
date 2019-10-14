@@ -1,5 +1,6 @@
 package com.belatrix.interns.StockAPIBackend.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,12 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.util.Pair;
 
-import com.belatrix.interns.StockAPIBackend.entities.Employee;
 import com.belatrix.interns.StockAPIBackend.entities.Product;
 
 /**
@@ -24,6 +23,7 @@ import com.belatrix.interns.StockAPIBackend.entities.Product;
 public class DepositRepositoryImplem implements DepositRepository{
 
 	private final MongoOperations mongoOp;
+	
 	
 	@Autowired
 	public DepositRepositoryImplem(MongoOperations mongoOperations) {
@@ -53,8 +53,8 @@ public class DepositRepositoryImplem implements DepositRepository{
 
 	@Override
 	public Optional<Product> findByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Product prod = this.mongoOp.findOne(new Query(Criteria.where("name").is(name)), Product.class);
+		return Optional.ofNullable(prod);
 	}
 
 	@Override
@@ -73,6 +73,16 @@ public class DepositRepositoryImplem implements DepositRepository{
 	public void updateProduct(Product p) {
 		//el save tambien hace el update. HAY QUE PASARLE EL ID SI O SI !!
 		this.mongoOp.save(p);
+	}
+
+	@Override
+	public List<Pair<String, Integer>> showAllStock() {
+		List<Product> allProd = getAllProducts().get();
+		List<Pair<String,Integer>> allStock = new ArrayList<Pair<String, Integer>>();
+		for(Product prod : allProd) {
+			allStock.add(Pair.of(prod.getName(), prod.getStock()));
+		}
+		return allStock;
 	}
 
 }

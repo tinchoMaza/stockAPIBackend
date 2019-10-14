@@ -2,7 +2,10 @@ package com.belatrix.interns.StockAPIBackend.services;
 
 import java.util.List;
 
+import org.springframework.data.util.Pair;
+
 import com.belatrix.interns.StockAPIBackend.entities.Product;
+import com.belatrix.interns.StockAPIBackend.exceptions.EmptyDepositException;
 import com.belatrix.interns.StockAPIBackend.exceptions.ProductException;
 
 /**
@@ -11,11 +14,13 @@ import com.belatrix.interns.StockAPIBackend.exceptions.ProductException;
 
 public interface DepositService {
 
-	List<Product> getAllProducts();
+	public List<Product> getAllProducts();
 	
-	Product findById(String id) throws ProductException;
+	public Product findById(String id) throws ProductException;
 	
-	Product findByName(String name) throws ProductException;
+	public Product findByName(String name) throws ProductException;
+	
+	public List<Pair<String, Integer>> showAllStock() throws EmptyDepositException;
 	
 	public Product saveProduct(Product p);
 	

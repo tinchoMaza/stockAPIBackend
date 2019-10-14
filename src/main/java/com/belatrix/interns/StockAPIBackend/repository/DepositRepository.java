@@ -3,6 +3,8 @@ package com.belatrix.interns.StockAPIBackend.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.util.Pair;
+
 import com.belatrix.interns.StockAPIBackend.entities.Product;
 
 /**
@@ -18,6 +20,8 @@ public interface DepositRepository{
 	public Optional<Product> findById(String id);
 
 	public Optional<Product> findByName(String name);
+	
+	public List<Pair<String, Integer>> showAllStock();
 
 	public Product saveProduct(Product p);
 

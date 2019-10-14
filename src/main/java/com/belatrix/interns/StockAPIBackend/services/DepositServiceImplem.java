@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.belatrix.interns.StockAPIBackend.entities.Product;
+import com.belatrix.interns.StockAPIBackend.exceptions.EmptyDepositException;
 import com.belatrix.interns.StockAPIBackend.exceptions.ProductException;
 import com.belatrix.interns.StockAPIBackend.repository.DepositRepository;
 
@@ -65,6 +67,13 @@ public class DepositServiceImplem implements DepositService {
 		Optional<Product> prod = depRepo.findById(id);
 		if(!prod.isPresent()) throw new ProductException("No product stored for this id: " + id);
 		return depRepo.checkReserveStock(prod.get());
+	}
+
+	@Override
+	public List<Pair<String, Integer>> showAllStock() throws EmptyDepositException {
+		List<Pair<String, Integer>> allProd = depRepo.showAllStock();
+		if(allProd.isEmpty()) throw new EmptyDepositException("There are no items stored in the deposit");
+		return null;
 	}
 
 }
