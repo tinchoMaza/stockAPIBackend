@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,11 +60,13 @@ public class DepositRepositoryTests {
 	public void tearDown() throws Exception {
 	}
 	
+	@Test
 	public final void testFindById_WhenTheProductDoesNotExist() {
-		Optional<Product> product = this.DepRepository.findById("84");
+		Optional<Product> product = this.DepRepository.findById("5d9f4b875e8b3c272cc09074");
 		assertTrue("There is not any product with id 84", !product.isPresent());
 	}
 	
+	@Test
 	public final void testFindById_WhenTheProductDoesExist() {
 		Optional<Product> product = this.DepRepository.findById("5d9f4b875e8b3c272cc09075");
 		assertTrue("There product has been found", product.isPresent());
