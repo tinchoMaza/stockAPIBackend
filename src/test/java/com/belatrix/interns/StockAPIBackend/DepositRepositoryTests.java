@@ -7,10 +7,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,14 +61,23 @@ public class DepositRepositoryTests {
 	public void tearDown() throws Exception {
 	}
 	
+	@Test
 	public final void testFindById_WhenTheProductDoesNotExist() {
 		Optional<Product> product = this.DepRepository.findById("84");
 		assertTrue("There is not any product with id 84", !product.isPresent());
 	}
 	
+	@Test
 	public final void testFindById_WhenTheProductDoesExist() {
 		Optional<Product> product = this.DepRepository.findById("5d9f4b875e8b3c272cc09075");
 		assertTrue("There product has been found", product.isPresent());
+	}
+	
+	@Test
+	public final void testCheckStock() {
+		ObjectId id = new ObjectId("12");
+		Product testProd = new Product(id, "Orange Juice", "For those thirsty bois", 8, 4);
+		assertTrue("There are 8 orange juices in stock, so check stock should return true", this.DepRepository.checkReserveStock(testProd));
 	}
 
 }
