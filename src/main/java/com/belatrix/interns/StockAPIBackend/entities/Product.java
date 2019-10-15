@@ -20,19 +20,19 @@ public class Product implements Serializable{
 	private String name;
 	private String description;
 	private int stock;
-	private int minReserveStock;
+	private int min_reserve_stock;
 	private Date arrival_date;
 	private Date departure_date;
 	
-	public Product(ObjectId _id, String name, String description, int stock, int minReserveStock) {
+	public Product(ObjectId _id, String name, String description, int stock, int min_reserve_stock) {
 		super();
 		this._id = _id;
 		this.name = name;
 		this.description = description;
 		this.stock = stock;
-		this.minReserveStock = minReserveStock;
+		this.min_reserve_stock = min_reserve_stock;
 		this.arrival_date = new Date(); //se asigna la fecha de hoy, se asume que llega y se registra el mismo dia
-		this.departure_date = null; //lo asigno como null porque apenas recibo el producto no tengo fecha de envio definida
+		this.departure_date = new Date(); //lo asigno como null porque apenas recibo el producto no tengo fecha de envio definida
 	}
 
 	public Date getArrivalDate() {
@@ -76,11 +76,11 @@ public class Product implements Serializable{
 	}
 	
 	public int getMinReserveStock() {
-		return minReserveStock;
+		return min_reserve_stock;
 	}
 	
 	public void setMinReserveStock(int minReserveStock) {
-		this.minReserveStock = minReserveStock;
+		this.min_reserve_stock = minReserveStock;
 	}
 
 	public String getId() {
@@ -92,6 +92,6 @@ public class Product implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "Product id: " + _id + ", name: " + name + ", description: " + description + ", stock: " + stock + ", contingency stock: " + minReserveStock + ", arrival date: " + arrival_date + ", depature date: " + departure_date;
+		return "Product id: " + _id + ", name: " + name + ", description: " + description + ", stock: " + stock + ", contingency stock: " + min_reserve_stock + ", arrival date: " + arrival_date + ", depature date: " + departure_date;
 	}
 }
