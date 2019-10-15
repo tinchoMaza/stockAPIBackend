@@ -6,6 +6,7 @@ import org.springframework.data.util.Pair;
 
 import com.belatrix.interns.StockAPIBackend.entities.Product;
 import com.belatrix.interns.StockAPIBackend.exceptions.EmptyDepositException;
+import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.exceptions.ProductException;
 
 /**
@@ -22,11 +23,11 @@ public interface DepositService {
 	
 	public List<Pair<String, Integer>> showAllStock() throws EmptyDepositException;
 	
-	public Product saveProduct(Product p);
+	public Product saveProduct(Product p) throws InvalidDataException;
 	
 	public void deleteProduct(String id);
 	
-	public void updateProduct(Product p);
+	public void updateProduct(String id, Product p) throws InvalidDataException;
 	
 	public boolean checkReserveStock(String id) throws ProductException;
 }

@@ -71,8 +71,15 @@ public class DepositRepositoryImplem implements DepositRepository{
 	}
 
 	@Override
-	public void updateProduct(Product p) {
-		//el save tambien hace el update. HAY QUE PASARLE EL ID SI O SI !!
+	public void updateProduct(String id, Product newProductInfo) {
+		Object _id = new ObjectId(id);
+		Product p = this.mongoOp.findById(_id, Product.class);
+		p.setName(newProductInfo.getName());
+		p.setDescription(newProductInfo.getDescription());
+		p.setStock(newProductInfo.getStock());
+		p.setMinReserveStock(newProductInfo.getMinReserveStock());
+		p.setArrivalDate(newProductInfo.getArrivalDate());
+		p.setDepartureDate(newProductInfo.getDepartureDate());
 		this.mongoOp.save(p);
 	}
 
@@ -85,5 +92,6 @@ public class DepositRepositoryImplem implements DepositRepository{
 		}
 		return allStock;
 	}
+
 
 }
