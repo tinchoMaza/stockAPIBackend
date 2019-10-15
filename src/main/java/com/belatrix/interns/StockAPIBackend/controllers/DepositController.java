@@ -1,11 +1,13 @@
 package com.belatrix.interns.StockAPIBackend.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.belatrix.interns.StockAPIBackend.entities.Product;
 import com.belatrix.interns.StockAPIBackend.exceptions.EmptyDepositException;
+import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.exceptions.ProductException;
 import com.belatrix.interns.StockAPIBackend.services.DepositService;
 
@@ -40,25 +43,25 @@ public class DepositController {
 		return ResponseEntity.ok(prods);
 	}
 	
-	@GetMapping("/stock/{_id}")
+	@GetMapping("/{_id}")
 	public ResponseEntity<Boolean> checkReserveStock(@PathVariable ("_id") String _id) throws ProductException{
 		boolean allOk = depServ.checkReserveStock(_id);
 		if(!allOk) throw new ProductException("No item found for this id: " + _id);
 		return ResponseEntity.ok(allOk);
 	}
 	
-	@GetMapping("/stock/{name}")
+	@GetMapping("/{name}")
 	public ResponseEntity<Product> findByName(@PathVariable String name) throws ProductException{
 			Product prod;
 		try {
 			prod = depServ.findByName(name);
 		}catch(ProductException ex) {
-			prod = null;
+			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(prod);
 	}
 	
-	@GetMapping("/stock/all")
+	@GetMapping("/all")
 	public ResponseEntity<List<Pair<String, Integer>>> showAllStock() throws EmptyDepositException{
 		List<Pair<String, Integer>> allStock;
 		try {
@@ -70,29 +73,44 @@ public class DepositController {
 	}
 	
 
-	@GetMapping("/products/{id}")
-	public ResponseEntity<Product> findById(@PathVariable ("id") String id){
+	@GetMapping("/products/{_id}")
+	public ResponseEntity<Product> findById(@PathVariable ("_id") String _id){
 		try {
-			return ResponseEntity.ok(depServ.findById(id));
+			return ResponseEntity.ok(depServ.findById(_id));
 		} catch (ProductException e) {
 			return ResponseEntity.notFound().build();
 		}
     }
 
-	@PostMapping("/")
-	public ResponseEntity<Product> saveProduct(@RequestBody @Valid Product p){
-		// no hace falta pasar el id, mongo lo asigna solo y lo devuelve solo
-		return ResponseEntity.ok(depServ.saveProduct(p));
+	@PostMapping("/products")
+	public ResponseEntity<List<String>> saveProduct(@RequestBody @Valid Product p) throws InvalidDataException{
+		try {
+			depServ.saveProduct(p);
+			List<String> added = new ArrayList<String>();
+			added.add("New product succesfuly added");
+			return ResponseEntity.ok().body(added);
+		}catch(InvalidDataException ex) {
+			List<String> messages = new ArrayList<String>();
+			messages.add(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(messages);
+		}
+		
 	}
 	
-	@PutMapping("/")
-	public ResponseEntity<Product> updateProduct(@RequestBody @Valid Product p){
-		//hay que mandarle el id, si no te crea uno nuevo con otro id
-		return ResponseEntity.ok(depServ.saveProduct(p));
+	@PutMapping("/products/{_id}")
+	public ResponseEntity<List<String>> updateProduct(@RequestBody @Valid Product p, @PathVariable ("_id") String _id) throws InvalidDataException{
+		try {
+			depServ.updateProduct(_id, p);
+			return ResponseEntity.ok().body(new ArrayList<String>());
+		}catch(InvalidDataException ex) {
+			List<String> messages = new ArrayList<String>();
+			messages.add(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(messages);
+		}
 	}
 	
-	@DeleteMapping("/{_id}")
-	public ResponseEntity<Void> deleteProduct(@PathVariable String _id){
+	@DeleteMapping("/products/{_id}")
+	public ResponseEntity<Void> deleteProduct(@PathVariable ("_id") String _id){
 		depServ.deleteProduct(_id);
 		return ResponseEntity.noContent().build();
 
