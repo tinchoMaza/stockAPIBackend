@@ -21,7 +21,7 @@ import com.belatrix.interns.StockAPIBackend.exceptions.EmployeeException;
 import com.belatrix.interns.StockAPIBackend.services.EmployeeService;
 
 @RestController
-@RequestMapping("/stockAPI")
+@RequestMapping("/stockAPI/employees")
 public class EmployeeController {
 	
 	private final EmployeeService empServ;

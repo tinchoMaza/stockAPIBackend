@@ -22,7 +22,7 @@ import com.belatrix.interns.StockAPIBackend.exceptions.ProductException;
 import com.belatrix.interns.StockAPIBackend.services.DepositService;
 
 @RestController
-@RequestMapping("/stockAPI")
+@RequestMapping("/stockAPI/deposit")
 public class DepositController {
 	
 	private final DepositService depServ;
