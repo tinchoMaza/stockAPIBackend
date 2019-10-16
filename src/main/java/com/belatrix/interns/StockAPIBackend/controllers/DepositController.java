@@ -36,6 +36,12 @@ public class DepositController {
 	}
 	
 	@GetMapping("/products/{_id}/stock")
+	public ResponseEntity<List<Product>> showProductsWithLowStock() {
+		List<Product> lowStockProducts = this.depServ.showProductsWithLowStock();
+		return ResponseEntity.ok(lowStockProducts);
+	}
+	
+	@GetMapping("/products/{_id}/stock")
 	public int showStockOfAProduct(@PathVariable String _id) {
 		return this.depServ.showStockOfAProduct(_id);
 	}

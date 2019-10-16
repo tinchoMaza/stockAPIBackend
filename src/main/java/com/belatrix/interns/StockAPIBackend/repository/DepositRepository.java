@@ -31,4 +31,6 @@ public interface DepositRepository{
 
 	public void updateProduct(String id, Product newProductInfo);
 	
+	public List<Product> showProductsWithLowStock();
+	
 }

@@ -3,6 +3,7 @@ package com.belatrix.interns.StockAPIBackend.repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Repository;
@@ -100,5 +101,9 @@ public class DepositRepositoryImplem implements DepositRepository{
 		return stockOfProduct;
 	}
 
-
-}
+	@Override
+	public List<Product> showProductsWithLowStock() {
+		Optional<List<Product>> products = getAllProducts();
+		return products.get().stream().filter(p -> !checkReserveStock(p)).collect(Collectors.toList());
+    }
+}	

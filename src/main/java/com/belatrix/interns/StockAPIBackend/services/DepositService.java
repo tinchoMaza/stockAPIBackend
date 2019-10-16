@@ -32,4 +32,6 @@ public interface DepositService {
 	public boolean checkReserveStock(String id) throws ProductException;
 	
 	public int showStockOfAProduct(String id);
+	
+	public List<Product> showProductsWithLowStock();
 }

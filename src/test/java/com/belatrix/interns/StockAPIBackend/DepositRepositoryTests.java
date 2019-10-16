@@ -5,6 +5,7 @@ package com.belatrix.interns.StockAPIBackend;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.bson.types.ObjectId;
@@ -74,17 +75,23 @@ public class DepositRepositoryTests {
 	}
 	
 	@Test
-	public final void showStockOfAProduct() {
+	public final void testShowStockOfAProduct() {
 		String idProduct = "5d9f4b875e8b3c272cc09075";
 		int expectedStock = 2000;
 		int actualStock = this.DepRepository.showStockOfAProduct(idProduct);
-		assertTrue("There product has been found", expectedStock == actualStock);
+		assertTrue("Here it is, the product´s stock", expectedStock == actualStock);
 	}
 	
 	public final void testCheckStock() {
 		ObjectId id = new ObjectId("12");
 		Product testProd = new Product(id, "Orange Juice", "For those thirsty bois", 8, 4);
 		assertTrue("There are 8 orange juices in stock, so check stock should return true", this.DepRepository.checkReserveStock(testProd));
+	}
+	
+	@Test
+	public final void testShowProductsWithLowStock() {
+		List<Product> lowStockProducts = this.DepRepository.showProductsWithLowStock();
+		assertTrue("There is no product with low stock in the db", lowStockProducts.isEmpty());
 	}
 
 }

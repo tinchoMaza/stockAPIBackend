@@ -5,6 +5,8 @@ package com.belatrix.interns.StockAPIBackend;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -102,5 +104,11 @@ public class DepositServiceTests {
 		exRule.expect(ProductException.class);
 		exRule.expectMessage("\"No product stored for this id: 12");
 		this.depService.checkReserveStock("12");
+	}
+	
+	@Test
+	public final void testShowProductsWithLowStock() {
+		List<Product> lowStockProducts = this.depService.showProductsWithLowStock();
+		assertTrue("There is no product with low stock in the db", lowStockProducts.isEmpty());
 	}
 }
