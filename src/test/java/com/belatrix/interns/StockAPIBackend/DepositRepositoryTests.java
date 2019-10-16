@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -78,6 +79,12 @@ public class DepositRepositoryTests {
 		int expectedStock = 2000;
 		int actualStock = this.DepRepository.showStockOfAProduct(idProduct);
 		assertTrue("There product has been found", expectedStock == actualStock);
+	}
+	
+	public final void testCheckStock() {
+		ObjectId id = new ObjectId("12");
+		Product testProd = new Product(id, "Orange Juice", "For those thirsty bois", 8, 4);
+		assertTrue("There are 8 orange juices in stock, so check stock should return true", this.DepRepository.checkReserveStock(testProd));
 	}
 
 }
