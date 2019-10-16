@@ -35,6 +35,11 @@ public class DepositController {
 		this.depServ = depServ;
 	}
 	
+	@GetMapping("/products/{_id}/stock")
+	public int showStockOfAProduct(@PathVariable String _id) {
+		return this.depServ.showStockOfAProduct(_id);
+	}
+	
 	@GetMapping("")
 	public ResponseEntity<List<Product>> getAllProducts() throws EmptyDepositException{
 		List<Product> prods = depServ.getAllProducts();

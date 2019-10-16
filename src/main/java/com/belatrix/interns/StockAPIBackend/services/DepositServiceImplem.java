@@ -131,4 +131,9 @@ public class DepositServiceImplem implements DepositService {
 		return null;
 	}
 
+	@Override
+	public int showStockOfAProduct(String id) {
+		return this.depRepo.showStockOfAProduct(id);
+	}
+
 }

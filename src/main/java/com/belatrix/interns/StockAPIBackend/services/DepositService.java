@@ -30,4 +30,6 @@ public interface DepositService {
 	public void updateProduct(String id, Product p) throws InvalidDataException;
 	
 	public boolean checkReserveStock(String id) throws ProductException;
+	
+	public int showStockOfAProduct(String id);
 }

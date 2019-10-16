@@ -71,5 +71,13 @@ public class DepositRepositoryTests {
 		Optional<Product> product = this.DepRepository.findById("5d9f4b875e8b3c272cc09075");
 		assertTrue("There product has been found", product.isPresent());
 	}
+	
+	@Test
+	public final void showStockOfAProduct() {
+		String idProduct = "5d9f4b875e8b3c272cc09075";
+		int expectedStock = 2000;
+		int actualStock = this.DepRepository.showStockOfAProduct(idProduct);
+		assertTrue("There product has been found", expectedStock == actualStock);
+	}
 
 }

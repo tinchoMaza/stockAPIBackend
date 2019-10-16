@@ -93,5 +93,12 @@ public class DepositRepositoryImplem implements DepositRepository{
 		return allStock;
 	}
 
+	@Override
+	public int showStockOfAProduct(String id) {
+		Optional<Product> product = findById(id);
+		int stockOfProduct = product.get().getStock();
+		return stockOfProduct;
+	}
+
 
 }

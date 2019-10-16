@@ -76,5 +76,15 @@ public class DepositServiceTests {
 		assertTrue("There product with id 5d9f4b875e8b3c272cc09075 has been found", product != null);
 	}
 	
+	@Test
+	public final void showStockOfAProduct() {
+		String idProduct = "5d9f4b875e8b3c272cc09075";
+		int expectedStock = 2000;
+		int actualStock = this.depService.showStockOfAProduct(idProduct);
+		assertTrue("There product has been found", expectedStock == actualStock);
+	}
+	
+
+	
 
 }
