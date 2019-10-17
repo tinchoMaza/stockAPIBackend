@@ -97,7 +97,7 @@ public class DepositServiceTests {
 
 	@Test
 	public final void testCheckStock_WhenProductExists() throws ProductException {
-		assertTrue("The product exists and there are plenty of stock, so method should return true", this.depService.checkReserveStock("5d9f4b875e8b3c272cc09075"));
+		assertTrue("The product exists and there are plenty of stock, so method should return true", this.depService.checkReserveStock(this.depService.findByName("Hierba Medicinal").getName()));
 	}
 	
 	@Rule
@@ -171,9 +171,9 @@ public class DepositServiceTests {
 	@Test
 	public final void testUpdateProduct_WithInvalidId() throws ProductException, InvalidDataException{
 		String id = "12";
+		Product prod = this.depService.findByName("Hierba Medicinal");
 		invalidIdRule.expect(ProductException.class);
 		invalidIdRule.expectMessage("No product stored for this id: 12");
-		Product prod = this.depService.findByName("Hierba Medicinal");
 		this.depService.updateProduct(id, prod);
 	}
 	

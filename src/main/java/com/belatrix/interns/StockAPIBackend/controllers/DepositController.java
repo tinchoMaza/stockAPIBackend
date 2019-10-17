@@ -66,10 +66,10 @@ public class DepositController {
 			Product prod;
 		try {
 			prod = depServ.findByName(name);
+			return ResponseEntity.ok(prod);
 		}catch(ProductException ex) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(prod);
 	}
 	
 	@GetMapping("/remaining-stock")
