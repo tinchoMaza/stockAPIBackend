@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
-
 import org.bson.types.ObjectId;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -85,6 +84,16 @@ public class DepositServiceTests {
 		assertTrue("There product with id 5d9f4b875e8b3c272cc09075 has been found", product != null);
 	}
 	
+	@Test
+	public final void showStockOfAProduct() {
+		String idProduct = "5d9f4b875e8b3c272cc09075";
+		int expectedStock = 2000;
+		int actualStock = this.depService.showStockOfAProduct(idProduct);
+		assertTrue("There product has been found", expectedStock == actualStock);
+	}
+	
+
+	
 
 	@Test
 	public final void testCheckStock_WhenProductExists() throws ProductException {
@@ -100,7 +109,7 @@ public class DepositServiceTests {
 		exRule.expectMessage("\"No product stored for this id: 12");
 		this.depService.checkReserveStock("12");
 	}
-	
+
 	
 	@Rule
 	public ExpectedException emptyRule = ExpectedException.none();
@@ -186,4 +195,10 @@ public class DepositServiceTests {
 		}
 	}
 	
+	@Test
+	public final void testShowProductsWithLowStock() {
+		List<Product> lowStockProducts = this.depService.showProductsWithLowStock();
+		assertTrue("There is no product with low stock in the db", lowStockProducts.isEmpty());
+	}
+
 }

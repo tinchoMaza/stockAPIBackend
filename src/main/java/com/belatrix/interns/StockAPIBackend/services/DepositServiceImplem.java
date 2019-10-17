@@ -135,4 +135,14 @@ public class DepositServiceImplem implements DepositService {
 		return allProd;
 	}
 
+	@Override
+	public int showStockOfAProduct(String id) {
+		return this.depRepo.showStockOfAProduct(id);
+	}
+
+	@Override
+	public List<Product> showProductsWithLowStock() {
+		return this.depRepo.showProductsWithLowStock();
+	}
+
 }

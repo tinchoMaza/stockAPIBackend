@@ -76,6 +76,13 @@ public class DepositRepositoryTests {
 	}
 	
 	@Test
+	public final void testShowStockOfAProduct() {
+		String idProduct = "5d9f4b875e8b3c272cc09075";
+		int expectedStock = 2000;
+		int actualStock = this.DepRepository.showStockOfAProduct(idProduct);
+		assertTrue("Here it is, the product´s stock", expectedStock == actualStock);
+	}
+	
 	public final void testCheckStock() {
 		ObjectId id = new ObjectId("12");
 		Product testProd = new Product(id, "Orange Juice", "For those thirsty bois", 8, 4);
@@ -140,6 +147,12 @@ public class DepositRepositoryTests {
 		}
 		
 		assertTrue("In order to pass this test, all three methods should work perfectly", errorCount == 0);
+	}
+	
+	@Test
+	public final void testShowProductsWithLowStock() {
+		List<Product> lowStockProducts = this.DepRepository.showProductsWithLowStock();
+		assertTrue("There is no product with low stock in the db", lowStockProducts.isEmpty());
 	}
 
 }

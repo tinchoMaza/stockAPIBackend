@@ -14,6 +14,8 @@ import com.belatrix.interns.StockAPIBackend.entities.Product;
 public interface DepositRepository{
 	
 	public boolean checkReserveStock(Product producto);
+	
+	public int showStockOfAProduct(String id);
 
 	public Optional<List<Product>> getAllProducts();
 
@@ -28,5 +30,7 @@ public interface DepositRepository{
 	public void deleteProduct(String id);
 
 	public void updateProduct(String id, Product newProductInfo);
+	
+	public List<Product> showProductsWithLowStock();
 	
 }
