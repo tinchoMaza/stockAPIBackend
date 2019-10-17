@@ -98,7 +98,15 @@ public class DepositController {
 	}
 	
 	@PutMapping("/products/{_id}")
-	public ResponseEntity<List<String>> updateProduct(@RequestBody @Valid Product p, @PathVariable ("_id") String _id) throws InvalidDataException{
+	public ResponseEntity<List<String>> updateProduct(@RequestBody @Valid Product p, @PathVariable ("_id") String _id) throws InvalidDataException, ProductException{
+		try {
+			@SuppressWarnings("unused")
+			Product aux = this.depServ.findById(_id);
+		}catch(ProductException e){
+			List<String>error = new ArrayList<String>();
+			error.add(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+		}
 		try {
 			depServ.updateProduct(_id, p);
 			return ResponseEntity.ok().body(new ArrayList<String>());
@@ -110,7 +118,7 @@ public class DepositController {
 	}
 	
 	@DeleteMapping("/products/{_id}")
-	public ResponseEntity<Void> deleteProduct(@PathVariable ("_id") String _id){
+	public ResponseEntity<Void> deleteProduct(@PathVariable ("_id") String _id) throws ProductException{
 		depServ.deleteProduct(_id);
 		return ResponseEntity.noContent().build();
 

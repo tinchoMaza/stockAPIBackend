@@ -45,7 +45,7 @@ public class DepositServiceImplem implements DepositService {
 	 * @param toExamine
 	 * @return
 	 */
-	public boolean descriptionContainsIllegalsCharacters(String toExamine) {
+	public boolean descriptionContainsIllegalsCharacters(String toExamine) { //Works for ID too
 		Pattern pattern = Pattern.compile("[½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°!$~#@*+%&=¿{}<>\\[\\\\]|\"\\_^]");
 		Matcher matcher = pattern.matcher(toExamine);
 		return matcher.find();
@@ -86,6 +86,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product findById(String id) throws ProductException {
+		if(descriptionContainsIllegalsCharacters(id)) throw new ProductException("No product stored for this id: " + id);
 		Optional<Product> prod = depRepo.findById(id);
 		if(!prod.isPresent()) throw new ProductException("No product stored for this id: " + id);
 		return prod.get();
@@ -93,6 +94,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product findByName(String name) throws ProductException {
+		if(containsIllegalsCharacters(name)) throw new ProductException("There is no " + name + " in stock");
 		Optional<Product> prod = depRepo.findByName(name);
 		if(!prod.isPresent()) throw new ProductException("There is no " + name + " in stock");
 		return prod.get();
@@ -106,12 +108,14 @@ public class DepositServiceImplem implements DepositService {
 	}
 
 	@Override
-	public void deleteProduct(String id) {
+	public void deleteProduct(String id) throws ProductException {
+		if(descriptionContainsIllegalsCharacters(id) || !this.depRepo.findById(id).isPresent()) throw new ProductException("No product stored for this id: " +id);
 		depRepo.deleteProduct(id);
 	}
 
 	@Override
-	public void updateProduct(String id, Product p) throws InvalidDataException{
+	public void updateProduct(String id, Product p) throws InvalidDataException, ProductException{
+		if(descriptionContainsIllegalsCharacters(id) || !this.depRepo.findById(id).isPresent()) throw new ProductException("No product stored for this id: " +id);
 		List<String> errorMsgs = productFieldsValidator(p);
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
 		depRepo.updateProduct(id, p);	
@@ -128,7 +132,7 @@ public class DepositServiceImplem implements DepositService {
 	public List<Pair<String, Integer>> showAllStock() throws EmptyDepositException {
 		List<Pair<String, Integer>> allProd = depRepo.showAllStock();
 		if(allProd.isEmpty()) throw new EmptyDepositException("There are no items stored in the deposit");
-		return null;
+		return allProd;
 	}
 
 }
