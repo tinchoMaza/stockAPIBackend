@@ -35,7 +35,7 @@ public class DepositController {
 		this.depServ = depServ;
 	}
 	
-	@GetMapping("/products/{_id}/stock")
+	@GetMapping("/products/stock")
 	public ResponseEntity<List<Product>> showProductsWithLowStock() {
 		List<Product> lowStockProducts = this.depServ.showProductsWithLowStock();
 		return ResponseEntity.ok(lowStockProducts);
@@ -72,7 +72,7 @@ public class DepositController {
 		return ResponseEntity.ok(prod);
 	}
 	
-	@GetMapping("/all")
+	@GetMapping("/remaining-stock")
 	public ResponseEntity<List<Pair<String, Integer>>> showAllStock() throws EmptyDepositException{
 		List<Pair<String, Integer>> allStock;
 		try {
