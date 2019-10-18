@@ -35,7 +35,7 @@ public class DepositController {
 		this.depServ = depServ;
 	}
 	
-	@GetMapping("/products/{_id}/stock")
+	@GetMapping("/products/stock")
 	public ResponseEntity<List<Product>> showProductsWithLowStock() {
 		List<Product> lowStockProducts = this.depServ.showProductsWithLowStock();
 		return ResponseEntity.ok(lowStockProducts);
@@ -66,13 +66,13 @@ public class DepositController {
 			Product prod;
 		try {
 			prod = depServ.findByName(name);
+			return ResponseEntity.ok(prod);
 		}catch(ProductException ex) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(prod);
 	}
 	
-	@GetMapping("/all")
+	@GetMapping("/remaining-stock")
 	public ResponseEntity<List<Pair<String, Integer>>> showAllStock() throws EmptyDepositException{
 		List<Pair<String, Integer>> allStock;
 		try {
@@ -109,7 +109,15 @@ public class DepositController {
 	}
 	
 	@PutMapping("/products/{_id}")
-	public ResponseEntity<List<String>> updateProduct(@RequestBody @Valid Product p, @PathVariable ("_id") String _id) throws InvalidDataException{
+	public ResponseEntity<List<String>> updateProduct(@RequestBody @Valid Product p, @PathVariable ("_id") String _id) throws InvalidDataException, ProductException{
+		try {
+			@SuppressWarnings("unused")
+			Product aux = this.depServ.findById(_id);
+		}catch(ProductException e){
+			List<String>error = new ArrayList<String>();
+			error.add(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+		}
 		try {
 			depServ.updateProduct(_id, p);
 			return ResponseEntity.ok().body(new ArrayList<String>());
@@ -121,7 +129,7 @@ public class DepositController {
 	}
 	
 	@DeleteMapping("/products/{_id}")
-	public ResponseEntity<Void> deleteProduct(@PathVariable ("_id") String _id){
+	public ResponseEntity<Void> deleteProduct(@PathVariable ("_id") String _id) throws ProductException{
 		depServ.deleteProduct(_id);
 		return ResponseEntity.noContent().build();
 
