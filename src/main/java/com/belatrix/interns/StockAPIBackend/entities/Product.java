@@ -1,7 +1,6 @@
 package com.belatrix.interns.StockAPIBackend.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -21,8 +20,6 @@ public class Product implements Serializable{
 	private String description;
 	private int stock;
 	private int min_reserve_stock;
-	private Date arrival_date;
-	private Date departure_date;
 	
 	public Product(ObjectId _id, String name, String description, int stock, int min_reserve_stock) {
 		super();
@@ -31,24 +28,6 @@ public class Product implements Serializable{
 		this.description = description;
 		this.stock = stock;
 		this.min_reserve_stock = min_reserve_stock;
-		this.arrival_date = new Date(); //se asigna la fecha de hoy, se asume que llega y se registra el mismo dia
-		this.departure_date = new Date(); //lo asigno como null porque apenas recibo el producto no tengo fecha de envio definida
-	}
-
-	public Date getArrivalDate() {
-		return arrival_date;
-	}
-
-	public void setArrivalDate(Date arrival_date) {
-		this.arrival_date = arrival_date;
-	}
-
-	public Date getDepartureDate() {
-		return departure_date;
-	}
-
-	public void setDepartureDate(Date departure_date) {
-		this.departure_date = departure_date;
 	}
 	
 	public String getName() {
@@ -92,6 +71,6 @@ public class Product implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "Product id: " + _id + ", name: " + name + ", description: " + description + ", stock: " + stock + ", contingency stock: " + min_reserve_stock + ", arrival date: " + arrival_date + ", depature date: " + departure_date;
+		return "Product id: " + _id + ", name: " + name + ", description: " + description + ", stock: " + stock + ", contingency stock: " + min_reserve_stock;
 	}
 }

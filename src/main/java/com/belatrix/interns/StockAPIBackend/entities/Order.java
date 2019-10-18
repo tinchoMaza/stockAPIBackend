@@ -1,7 +1,7 @@
 package com.belatrix.interns.StockAPIBackend.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -22,15 +22,18 @@ public class Order implements Serializable{
 	private Status status;
 	private int idEmployee;
 	private List<Product> orderedProducts;
-	
-	public Order(ObjectId _id, Status status, int idEmployee) {
+	private Date arrival_date;
+	private Date departure_date;
+
+	public Order(Status status, int idEmployee, List<Product> orderedProducts, Date arrival_date, Date departure_date) {
 		super();
-		this._id = _id;
 		this.status = status;
 		this.idEmployee = idEmployee;
-		this.orderedProducts = new ArrayList<Product>();
+		this.orderedProducts = orderedProducts;
+		this.arrival_date = arrival_date;
+		this.departure_date = departure_date;
 	}
-
+	
 	public String getId() {
 		return _id.toHexString();
 	}
@@ -64,13 +67,26 @@ public class Order implements Serializable{
 		this.idEmployee = idEmpleado;
 	}
 	
+	public Date getArrival_date() {
+		return arrival_date;
+	}
+	public void setArrival_date(Date arrival_date) {
+		this.arrival_date = arrival_date;
+	}
+	public Date getDeparture_date() {
+		return departure_date;
+	}
+	public void setDeparture_date(Date departure_date) {
+		this.departure_date = departure_date;
+	}
+
 	@Override
 	public String toString() {
 		String productsId = "";
 		for(Product p: orderedProducts) {
 			productsId.concat(p.getId() + ", ");
 		}
-		return "Order id: " + _id + ", status: " + status + ", id employee who ordered: " + idEmployee + ", id products: " + productsId;
+		return "Order id: " + _id + ", status: " + status + ", id employee who ordered: " + idEmployee + ", id products: " + productsId + ", order date: " + arrival_date + ", departure date: " + departure_date;
 	}
 	
 }

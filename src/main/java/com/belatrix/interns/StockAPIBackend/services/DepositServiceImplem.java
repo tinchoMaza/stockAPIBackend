@@ -71,10 +71,6 @@ public class DepositServiceImplem implements DepositService {
 			messages.add("Invalid value for reserve stock, it can´t be less than 0");
 		}
 		
-		if (prod.getArrivalDate().compareTo(prod.getDepartureDate()) > 0) {
-			messages.add("A product cannot be delivered before it arrives");
-		}
-		
 		return messages;
 	}
 	

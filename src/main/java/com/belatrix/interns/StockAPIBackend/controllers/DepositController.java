@@ -54,7 +54,7 @@ public class DepositController {
 		return ResponseEntity.ok(prods);
 	}
 	
-	@GetMapping("/{_id}")
+	@GetMapping("/reserve-stock/{_id}")
 	public ResponseEntity<Boolean> checkReserveStock(@PathVariable ("_id") String _id) throws ProductException{
 		boolean allOk = depServ.checkReserveStock(_id);
 		if(!allOk) throw new ProductException("No item found for this id: " + _id);
