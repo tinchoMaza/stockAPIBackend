@@ -129,9 +129,14 @@ public class DepositController {
 	}
 	
 	@DeleteMapping("/products/{_id}")
-	public ResponseEntity<Void> deleteProduct(@PathVariable ("_id") String _id) throws ProductException{
-		depServ.deleteProduct(_id);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<ProductException> deleteProduct(@PathVariable ("_id") String _id) throws ProductException{
+		try {
+			depServ.deleteProduct(_id);
+			return ResponseEntity.noContent().build();
+		}catch(ProductException ex) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex);
+		}
+		
 
 	}
 	

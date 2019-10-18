@@ -73,8 +73,7 @@ public class DepositRepositoryImplem implements DepositRepository{
 
 	@Override
 	public void updateProduct(String id, Product newProductInfo) {
-		Object _id = new ObjectId(id);
-		Product p = this.mongoOp.findById(_id, Product.class);
+		Product p = findById(id).get();
 		p.setName(newProductInfo.getName());
 		p.setDescription(newProductInfo.getDescription());
 		p.setStock(newProductInfo.getStock());
