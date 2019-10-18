@@ -80,8 +80,6 @@ public class DepositRepositoryImplem implements DepositRepository{
 		p.setDescription(newProductInfo.getDescription());
 		p.setStock(newProductInfo.getStock());
 		p.setMinReserveStock(newProductInfo.getMinReserveStock());
-		p.setArrivalDate(newProductInfo.getArrivalDate());
-		p.setDepartureDate(newProductInfo.getDepartureDate());
 		this.mongoOp.save(p);
 	}
 
