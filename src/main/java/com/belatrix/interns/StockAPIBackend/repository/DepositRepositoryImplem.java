@@ -61,9 +61,9 @@ public class DepositRepositoryImplem implements DepositRepository{
 
 	
 	@Override
-	public Product saveProduct(Product p) {
+	public Optional<Product> saveProduct(Product p) {
 		this.mongoOp.save(p);
-		return findById(p.getId()).get();
+		return findById(p.getId());
 	}
 
 	@Override

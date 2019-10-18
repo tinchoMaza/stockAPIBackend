@@ -104,7 +104,12 @@ public class DepositServiceImplem implements DepositService {
 	public Product saveProduct(Product p) throws InvalidDataException{
 		List<String> errorMsgs = productFieldsValidator(p);
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
-		return depRepo.saveProduct(p);
+		Optional<Product> checkProd = this.depRepo.saveProduct(p);
+		if(!Optional.ofNullable(checkProd).isPresent()) {
+			errorMsgs.add("Error! Could store item in DB");
+			throw new InvalidDataException(errorMsgs);
+		}
+		return checkProd.get();
 	}
 
 	@Override
@@ -117,6 +122,10 @@ public class DepositServiceImplem implements DepositService {
 	public void updateProduct(String id, Product p) throws InvalidDataException{
 		List<String> errorMsgs = productFieldsValidator(p);
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
+		if(!Optional.ofNullable(this.depRepo.findById(id).get()).isPresent()) {
+			errorMsgs.add("Invalid id, cannot update this product with id: " + id);
+			throw new InvalidDataException(errorMsgs);
+		}
 		depRepo.updateProduct(id, p);	
 	}
 

@@ -25,7 +25,7 @@ public interface DepositRepository{
 	
 	public List<Pair<String, Integer>> showAllStock();
 
-	public Product saveProduct(Product p);
+	public Optional<Product> saveProduct(Product p);
 
 	public void deleteProduct(String id);
 
