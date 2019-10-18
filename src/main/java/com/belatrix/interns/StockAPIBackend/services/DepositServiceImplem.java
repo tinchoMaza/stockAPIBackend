@@ -114,8 +114,7 @@ public class DepositServiceImplem implements DepositService {
 	}
 
 	@Override
-	public void updateProduct(String id, Product p) throws InvalidDataException, ProductException{
-		if(descriptionContainsIllegalsCharacters(id) || !this.depRepo.findById(id).isPresent()) throw new ProductException("No product stored for this id: " +id);
+	public void updateProduct(String id, Product p) throws InvalidDataException{
 		List<String> errorMsgs = productFieldsValidator(p);
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
 		depRepo.updateProduct(id, p);	

@@ -27,7 +27,7 @@ public interface DepositService {
 	
 	public void deleteProduct(String id) throws ProductException;
 	
-	public void updateProduct(String id, Product p) throws InvalidDataException, ProductException;
+	public void updateProduct(String id, Product p) throws InvalidDataException;
 	
 	public boolean checkReserveStock(String id) throws ProductException;
 	
