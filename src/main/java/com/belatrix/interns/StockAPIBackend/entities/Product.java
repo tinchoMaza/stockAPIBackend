@@ -21,9 +21,8 @@ public class Product implements Serializable{
 	private int stock;
 	private int min_reserve_stock;
 	
-	public Product(ObjectId _id, String name, String description, int stock, int min_reserve_stock) {
+	public Product(String name, String description, int stock, int min_reserve_stock) {
 		super();
-		this._id = _id;
 		this.name = name;
 		this.description = description;
 		this.stock = stock;

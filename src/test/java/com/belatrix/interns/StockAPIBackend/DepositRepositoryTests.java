@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Optional;
 
-import org.bson.types.ObjectId;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -71,21 +70,20 @@ public class DepositRepositoryTests {
 	
 	@Test
 	public final void testFindById_WhenTheProductDoesExist() {
-		Optional<Product> product = this.DepRepository.findById("5d9f4b875e8b3c272cc09075");
+		Optional<Product> product = this.DepRepository.findById("5da882f250a76a293cafb119");
 		assertTrue("There product has been found", product.isPresent());
 	}
 	
 	@Test
 	public final void testShowStockOfAProduct() {
-		String idProduct = "5d9f4b875e8b3c272cc09075";
-		int expectedStock = 2000;
+		String idProduct = "5da880b8a9240d3cbc8aa45c";
+		int expectedStock = 4;
 		int actualStock = this.DepRepository.showStockOfAProduct(idProduct);
 		assertTrue("Here it is, the product´s stock", expectedStock == actualStock);
 	}
 	
 	public final void testCheckStock() {
-		ObjectId id = new ObjectId("12");
-		Product testProd = new Product(id, "Orange Juice", "For those thirsty bois", 8, 4);
+		Product testProd = new Product("Orange Juice", "For those thirsty bois", 8, 4);
 		assertTrue("There are 8 orange juices in stock, so check stock should return true", this.DepRepository.checkReserveStock(testProd));
 	}
 	
@@ -108,39 +106,38 @@ public class DepositRepositoryTests {
 	
 	@Test
 	public final void testFindByName_WhenProductExists() {
-		Optional<Product> testProd = this.DepRepository.findByName("Hierba Medicinal");
+		Optional<Product> testProd = this.DepRepository.findByName("Hojas de impresion tamano A4");
 		assertTrue("The product exists in the DB, so testProd should be present", testProd.isPresent());
 	}
 	
 	@Test
 	public final void testFindByName_WhenProductDoesntExists() {
-		Optional<Product> testProd = this.DepRepository.findByName("Manos para que Agus juegue bien al Ping Pong");
+		Optional<Product> testProd = this.DepRepository.findByName("Manos para que Tincho deje de ser hijo de Agus en el PingPong");
 		assertTrue("The product doesnt exist in the DB, so testProd should not be present", !testProd.isPresent());
 	}
 	
 	@Test
 	public final void testAMD() {
-		ObjectId id = new ObjectId("12");
-		Product testProd = new Product(id, "Orange Juice", "For those thirsty bois", 8, 4);
+		Product testProd = new Product("Orange Juice", "For those thirsty bois", 8, 4);
 		int errorCount = 0;
 		
-		Product checkProd = this.DepRepository.saveProduct(testProd);
-		if(checkProd != testProd) {
+		Optional<Product> checkProd = this.DepRepository.saveProduct(testProd);
+		if(checkProd.get() != testProd) {
 			System.out.print("Error in save method");
 			errorCount++;
 		}
 		
-		checkProd.setName("Facturas");
-		checkProd.setDescription("For those hungry bois");
-		this.DepRepository.updateProduct(id.toString(), checkProd);
+		checkProd.get().setName("Facturas");
+		checkProd.get().setDescription("For those hungry bois");
+		this.DepRepository.updateProduct(checkProd.get().getId().toString(), checkProd.get());
 		Optional<Product> aux = this.DepRepository.findByName("Facturas");
-		if((!aux.isPresent()) || (aux.get().getId().compareTo(id.toString()) != 0)) {
+		if((!aux.isPresent()) || (aux.get().getId().compareTo(checkProd.get().getId().toString()) != 0)) {
 			System.out.print("Error in update method");
 			errorCount++;
 		}
 		
-		this.DepRepository.deleteProduct(id.toString());
-		aux = this.DepRepository.findById(id.toString());
+		this.DepRepository.deleteProduct(checkProd.get().getId().toString());
+		aux = this.DepRepository.findById(checkProd.get().getId().toString());
 		if(aux.isPresent()) {
 			System.out.print("Error in delete method");
 			errorCount++;

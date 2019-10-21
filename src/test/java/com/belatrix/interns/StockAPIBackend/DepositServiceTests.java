@@ -6,7 +6,6 @@ package com.belatrix.interns.StockAPIBackend;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import org.bson.types.ObjectId;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -142,9 +141,8 @@ public class DepositServiceTests {
 	public ExpectedException saveRule = ExpectedException.none();
 	@Test
 	public final void testSaveProduct_WithInvalidFields(){
-		ObjectId id = new ObjectId("12");
 		saveRule.expect(InvalidDataException.class);
-		Product testProd = new Product(id, "12345", "½¼≤√ⁿ²ƒ±₧÷", -8, -5);
+		Product testProd = new Product("12345", "½¼≤√ⁿ²ƒ±₧÷", -8, -5);
 		try {
 			this.depService.saveProduct(testProd);
 		}catch(InvalidDataException ex) {
@@ -179,8 +177,7 @@ public class DepositServiceTests {
 	public final void testUpdateProduct_WithInvalidProduct() throws ProductException, InvalidDataException{
 		invalidProductRule.expect(InvalidDataException.class);
 		Product prod = this.depService.findByName("Hierba Medicinal");
-		ObjectId id = new ObjectId(prod.getId());
-		Product testProd = new Product(id, "12345", "½¼≤√ⁿ²ƒ±₧÷", -8, -5);
+		Product testProd = new Product("12345", "½¼≤√ⁿ²ƒ±₧÷", -8, -5);
 		try {
 			this.depService.updateProduct(prod.getId(), testProd);
 		}catch(InvalidDataException ex) {
