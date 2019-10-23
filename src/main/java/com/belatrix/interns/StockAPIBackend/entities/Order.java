@@ -20,18 +20,17 @@ public class Order implements Serializable{
 	@Id
 	private ObjectId _id;
 	private Status status;
-	private int idEmployee;
+	private ObjectId idEmployee;
 	private List<Product> orderedProducts;
 	private Date arrival_date;
 	private Date departure_date;
 
-	public Order(Status status, int idEmployee, List<Product> orderedProducts, Date arrival_date, Date departure_date) {
+	public Order(Status status, ObjectId idEmployee, List<Product> orderedProducts, Date arrival_date) {
 		super();
 		this.status = status;
 		this.idEmployee = idEmployee;
 		this.orderedProducts = orderedProducts;
 		this.arrival_date = arrival_date;
-		this.departure_date = departure_date;
 	}
 	
 	public String getId() {
@@ -60,10 +59,10 @@ public class Order implements Serializable{
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	public int getIdEmployee() {
+	public ObjectId getIdEmployee() {
 		return idEmployee;
 	}
-	public void setIdEmployee(int idEmpleado) {
+	public void setIdEmployee(ObjectId idEmpleado) {
 		this.idEmployee = idEmpleado;
 	}
 	
