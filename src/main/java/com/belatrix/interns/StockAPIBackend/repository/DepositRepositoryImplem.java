@@ -62,7 +62,7 @@ public class DepositRepositoryImplem implements DepositRepository{
 	
 	@Override
 	public Optional<Product> saveProduct(Product p) {
-		this.mongoOp.save(p);
+		this.mongoOp.save(p, "products");
 		return findById(p.getId());
 	}
 
@@ -80,7 +80,7 @@ public class DepositRepositoryImplem implements DepositRepository{
 		p.setDescription(newProductInfo.getDescription());
 		p.setStock(newProductInfo.getStock());
 		p.setMinReserveStock(newProductInfo.getMinReserveStock());
-		this.mongoOp.save(p);
+		this.mongoOp.save(p, "products");
 	}
 
 	@Override

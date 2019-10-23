@@ -1,10 +1,7 @@
 package com.belatrix.interns.StockAPIBackend.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -16,6 +13,7 @@ import com.belatrix.interns.StockAPIBackend.exceptions.EmptyDepositException;
 import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.exceptions.ProductException;
 import com.belatrix.interns.StockAPIBackend.repository.DepositRepository;
+import com.belatrix.interns.StockAPIBackend.paramValidations.*;
 
 /**
  * @author fbalsas
@@ -25,54 +23,13 @@ import com.belatrix.interns.StockAPIBackend.repository.DepositRepository;
 public class DepositServiceImplem implements DepositService {
 
 	private DepositRepository depRepo;
+	private paramValidations valid;
 	
 	@Autowired
 	public DepositServiceImplem(DepositRepository depRepo) {
 		this.depRepo = depRepo;
 	}
 	
-	/**
-	 * @param toExamine
-	 * @return
-	 */
-	public boolean containsIllegalsCharacters(String toExamine) {
-		Pattern pattern = Pattern.compile("[0123456789½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°,.:;/!$~#@*+%&()=¿{}<>\\[\\\\]|\"\\_^]");
-		Matcher matcher = pattern.matcher(toExamine);
-		return matcher.find();
-	}
-	
-	/**
-	 * @param toExamine
-	 * @return
-	 */
-	public boolean descriptionContainsIllegalsCharacters(String toExamine) { //Works for ID too
-		Pattern pattern = Pattern.compile("[½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°!$~#@*+%&=¿{}<>\\[\\\\]|\"\\_^]");
-		Matcher matcher = pattern.matcher(toExamine);
-		return matcher.find();
-	}
-	
-	private List<String> productFieldsValidator(Product prod) {
-		// Checks if the fields of the kinship are null or not
-		List<String> messages = new ArrayList<String>();
-		
-		if ((prod.getName().compareTo("") == 0) || containsIllegalsCharacters(prod.getName())) {
-			messages.add("Invalid/Empty name field for product");
-		}
-		
-		if ((prod.getDescription().compareTo("") == 0) || descriptionContainsIllegalsCharacters(prod.getDescription())) {
-			messages.add("Empty/Invalid characters in product´s description");
-		} 
-		
-		if (prod.getStock() < 0) {
-			messages.add("Invalid value for stock, it can´t be less than 0");
-		}
-		
-		if (prod.getMinReserveStock() < 0) {
-			messages.add("Invalid value for reserve stock, it can´t be less than 0");
-		}
-		
-		return messages;
-	}
 	
 	@Override
 	public List<Product> getAllProducts() {
@@ -82,7 +39,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product findById(String id) throws ProductException {
-		if(descriptionContainsIllegalsCharacters(id)) throw new ProductException("No product stored for this id: " + id);
+		if(valid.descriptionContainsIllegalsCharacters(id)) throw new ProductException("No product stored for this id: " + id);
 		Optional<Product> prod = depRepo.findById(id);
 		if(!prod.isPresent()) throw new ProductException("No product stored for this id: " + id);
 		return prod.get();
@@ -90,7 +47,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product findByName(String name) throws ProductException {
-		if(containsIllegalsCharacters(name)) throw new ProductException("There is no " + name + " in stock");
+		if(valid.containsIllegalsCharacters(name)) throw new ProductException("There is no " + name + " in stock");
 		Optional<Product> prod = depRepo.findByName(name);
 		if(!prod.isPresent()) throw new ProductException("There is no " + name + " in stock");
 		return prod.get();
@@ -98,7 +55,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product saveProduct(Product p) throws InvalidDataException{
-		List<String> errorMsgs = productFieldsValidator(p);
+		List<String> errorMsgs = valid.productFieldsValidator(p);
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
 		Optional<Product> checkProd = this.depRepo.saveProduct(p);
 		if(!Optional.ofNullable(checkProd).isPresent()) {
@@ -110,13 +67,13 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public void deleteProduct(String id) throws ProductException {
-		if(descriptionContainsIllegalsCharacters(id) || !this.depRepo.findById(id).isPresent()) throw new ProductException("No product stored for this id: " +id);
+		if(valid.descriptionContainsIllegalsCharacters(id) || !this.depRepo.findById(id).isPresent()) throw new ProductException("No product stored for this id: " +id);
 		depRepo.deleteProduct(id);
 	}
 
 	@Override
 	public void updateProduct(String id, Product p) throws InvalidDataException{
-		List<String> errorMsgs = productFieldsValidator(p);
+		List<String> errorMsgs = valid.productFieldsValidator(p);
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
 		if(!Optional.ofNullable(this.depRepo.findById(id).get()).isPresent()) {
 			errorMsgs.add("Invalid id, cannot update this product with id: " + id);
