@@ -18,6 +18,9 @@ import java.util.Optional;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.entities.Product;
 import com.belatrix.interns.StockAPIBackend.entities.Status;
@@ -26,6 +29,8 @@ import com.belatrix.interns.StockAPIBackend.exceptions.OrderException;
 import com.belatrix.interns.StockAPIBackend.paramValidations.*;
 import com.belatrix.interns.StockAPIBackend.repository.OrdersRepository;
 
+@Service("ordersService")
+@Transactional
 public class OrdersServiceImpem implements OrdersService{
 	
 	private OrdersRepository ordRepo;
