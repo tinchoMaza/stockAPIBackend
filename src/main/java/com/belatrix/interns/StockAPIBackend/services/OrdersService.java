@@ -11,8 +11,11 @@ import com.belatrix.interns.StockAPIBackend.entities.Product;
 import com.belatrix.interns.StockAPIBackend.entities.Status;
 import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.exceptions.OrderException;
+import com.belatrix.interns.StockAPIBackend.entities.Email;
 
 public interface OrdersService {
+	
+	public boolean sendEmail(Email email);
 
 	public void save(ObjectId empId, List<Product> orderedProds, Status status, Date arrival, Optional<Date> departure) throws InvalidDataException;
 	
