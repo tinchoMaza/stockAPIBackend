@@ -107,9 +107,11 @@ public class OrdersServiceImpem implements OrdersService{
             
             
         } catch (AddressException ex) {
+        	ex.printStackTrace();
         	return false;
             
         } catch (MessagingException ex) {
+        	ex.printStackTrace();
         	return false;
         }
         

@@ -16,8 +16,8 @@ public class Email {
     
     public Email(String _bodyMessage) {
     	super();
-    	this.remitter = "stockapprdsi@gmail.com";
-    	this.password = "tinchobant";
+    	this.remitter = "";
+    	this.password = "";
     	this.addressee = "danebrosio@gmail.com";
     	this.subject = "New order has been created";
     	this.bodyMessage = _bodyMessage;
