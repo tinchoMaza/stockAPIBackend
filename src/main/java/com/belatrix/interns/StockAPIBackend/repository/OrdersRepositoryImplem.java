@@ -33,18 +33,18 @@ public class OrdersRepositoryImplem implements OrdersRepository {
 
 	@Override
 	public void delete(ObjectId id) {
-		this.mongoOp.findAndRemove(new Query(Criteria.where("_id").is(id)), Order.class);	
+		this.mongoOp.findAndRemove(new Query(Criteria.where("_id").is(id)), Order.class, "orders");	
 	}
 
 	@Override
 	public List<Order> findAll() {
-		List<Order> orders = this.mongoOp.find(new Query(), Order.class);
+		List<Order> orders = this.mongoOp.find(new Query(), Order.class, "orders");
 		return orders;
 	}
 
 	@Override
 	public Optional<Order> findById(ObjectId id) {
-		Order order = this.mongoOp.findOne(new Query(Criteria.where("_id").is(id)), Order.class);
+		Order order = this.mongoOp.findOne(new Query(Criteria.where("_id").is(id)), Order.class, "orders");
 		return Optional.ofNullable(order);
 	}
 

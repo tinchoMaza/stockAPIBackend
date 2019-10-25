@@ -42,20 +42,20 @@ public class DepositRepositoryImplem implements DepositRepository{
 
 	@Override
 	public Optional<List<Product>> getAllProducts() {
-		List<Product> prods = this.mongoOp.find(new Query(), Product.class);
+		List<Product> prods = this.mongoOp.find(new Query(), Product.class, "products");
 		return  Optional.ofNullable(prods);
 	}
 
 	@Override
 	public Optional<Product> findById(String id) {
 		ObjectId _id = new ObjectId(id);
-		Product product = this.mongoOp.findOne(new Query(Criteria.where("_id").is(_id)), Product.class);
+		Product product = this.mongoOp.findOne(new Query(Criteria.where("_id").is(_id)), Product.class, "products");
 	    return Optional.ofNullable(product);
 	}
 
 	@Override
 	public Optional<Product> findByName(String name) {
-		Product prod = this.mongoOp.findOne(new Query(Criteria.where("name").is(name)), Product.class);
+		Product prod = this.mongoOp.findOne(new Query(Criteria.where("name").is(name)), Product.class, "products");
 		return Optional.ofNullable(prod);
 	}
 
@@ -69,7 +69,7 @@ public class DepositRepositoryImplem implements DepositRepository{
 	@Override
 	public void deleteProduct(String id) {
 		ObjectId _id = new ObjectId(id);
-		this.mongoOp.findAndRemove(new Query(Criteria.where("_id").is(_id)), Product.class);
+		this.mongoOp.findAndRemove(new Query(Criteria.where("_id").is(_id)), Product.class, "products");
 	}
 
 	
