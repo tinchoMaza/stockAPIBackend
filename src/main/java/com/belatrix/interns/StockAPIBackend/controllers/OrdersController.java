@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.entities.Product;
-import com.belatrix.interns.StockAPIBackend.entities.Status;
+import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateOrder;
 import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.exceptions.NoOrdersException;
 import com.belatrix.interns.StockAPIBackend.exceptions.OrderException;
@@ -38,7 +38,7 @@ public class OrdersController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<InvalidDataException> save(@RequestBody @PathVariable ObjectId empId, List<Product> orderedProds, Status status, Date arrival, Optional<Date> departure){
+	public ResponseEntity<InvalidDataException> save(@RequestBody @PathVariable ObjectId empId, List<Product> orderedProds, StateOrder status, Date arrival, Optional<Date> departure){
 		try {
 			this.ordService.save(empId, orderedProds, status, arrival, departure);
 			return ResponseEntity.ok().build();

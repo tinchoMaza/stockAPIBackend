@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateOrder;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @Document(collection = "orders")
@@ -19,13 +20,13 @@ public class Order implements Serializable{
 	
 	@Id
 	private ObjectId _id;
-	private Status status;
+	private StateOrder status;
 	private ObjectId idEmployee;
 	private List<Product> orderedProducts;
 	private Date arrival_date;
 	private Date departure_date;
 
-	public Order(Status status, ObjectId idEmployee, List<Product> orderedProducts, Date arrival_date) {
+	public Order(StateOrder status, ObjectId idEmployee, List<Product> orderedProducts, Date arrival_date) {
 		super();
 		this.status = status;
 		this.idEmployee = idEmployee;
@@ -53,10 +54,10 @@ public class Order implements Serializable{
 		this.orderedProducts.remove(p);
 	}
 	
-	public Status getStatus() {
+	public StateOrder getStatus() {
 		return status;
 	}
-	public void setStatus(Status status) {
+	public void setStatus(StateOrder status) {
 		this.status = status;
 	}
 	public ObjectId getIdEmployee() {
@@ -79,13 +80,6 @@ public class Order implements Serializable{
 		this.departure_date = departure_date;
 	}
 
-	@Override
-	public String toString() {
-		String productsId = "";
-		for(Product p: orderedProducts) {
-			productsId.concat(p.getId() + ", ");
-		}
-		return "Order id: " + _id + ", status: " + status + ", id employee who ordered: " + idEmployee + ", id products: " + productsId + ", order date: " + arrival_date + ", departure date: " + departure_date;
-	}
+	
 	
 }

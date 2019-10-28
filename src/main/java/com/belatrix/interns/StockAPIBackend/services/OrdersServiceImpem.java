@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.entities.Product;
-import com.belatrix.interns.StockAPIBackend.entities.Status;
+import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateOrder;
 import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.exceptions.OrderException;
 import com.belatrix.interns.StockAPIBackend.paramValidations.*;
@@ -42,7 +42,7 @@ public class OrdersServiceImpem implements OrdersService{
 	}
 
 	@Override
-	public void save(ObjectId empId, List<Product> orderedProds, Status status, Date arrival, Optional<Date> departure) throws InvalidDataException {
+	public void save(ObjectId empId, List<Product> orderedProds, StateOrder status, Date arrival, Optional<Date> departure) throws InvalidDataException {
 		List<String> errorMsgs = new ArrayList<String>();
 		if(status.getDescription().matches("Rejected")) errorMsgs.add("This order has been rejected");
 		if(status.getDescription().matches("On Hold") && departure.isPresent()) errorMsgs.add("On Hold orders cannot have known departure dates");
