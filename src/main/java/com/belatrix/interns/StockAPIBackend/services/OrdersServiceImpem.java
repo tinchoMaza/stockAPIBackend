@@ -27,6 +27,7 @@ import com.belatrix.interns.StockAPIBackend.entities.Status;
 import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.exceptions.OrderException;
 import com.belatrix.interns.StockAPIBackend.paramValidations.*;
+import com.belatrix.interns.StockAPIBackend.repository.EmployeeRepository;
 import com.belatrix.interns.StockAPIBackend.repository.OrdersRepository;
 
 @Service("ordersService")
@@ -35,6 +36,12 @@ public class OrdersServiceImpem implements OrdersService{
 	
 	private OrdersRepository ordRepo;
 	private paramValidations valid;
+	private EmployeeRepository empRepo;
+	
+	@Autowired
+	public void EmployeeServiceImplem(EmployeeRepository empRepo) {
+		this.empRepo = empRepo;
+	}
 	
 	@Autowired
 	public void OrdersServiceImplem(OrdersRepository ordRepo) {
@@ -44,6 +51,11 @@ public class OrdersServiceImpem implements OrdersService{
 	@Override
 	public void save(ObjectId empId, List<Product> orderedProds, Status status, Date arrival, Optional<Date> departure) throws InvalidDataException {
 		List<String> errorMsgs = new ArrayList<String>();
+		for(Product prod : orderedProds) {
+			errorMsgs = this.valid.productFieldsValidator(prod);
+			if(!errorMsgs.isEmpty()) break;
+		}
+		if(!this.empRepo.findById(empId.toString()).isPresent()) errorMsgs.add("Employee not found in Database");
 		if(status.getDescription().matches("Rejected")) errorMsgs.add("This order has been rejected");
 		if(status.getDescription().matches("On Hold") && departure.isPresent()) errorMsgs.add("On Hold orders cannot have known departure dates");
 		if(orderedProds.isEmpty()) errorMsgs.add("No products have been selected");

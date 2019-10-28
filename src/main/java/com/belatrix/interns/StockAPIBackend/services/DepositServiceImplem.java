@@ -56,6 +56,7 @@ public class DepositServiceImplem implements DepositService {
 	@Override
 	public Product saveProduct(Product p) throws InvalidDataException{
 		List<String> errorMsgs = valid.productFieldsValidator(p);
+		if(this.depRepo.findByName(p.getName()).isPresent()) errorMsgs.add("Duplicated product! This one already exists in Database. You can update it instead");
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
 		Optional<Product> checkProd = this.depRepo.saveProduct(p);
 		if(!Optional.ofNullable(checkProd).isPresent()) {
