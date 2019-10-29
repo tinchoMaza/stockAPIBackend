@@ -6,6 +6,7 @@ package com.belatrix.interns.StockAPIBackend.entities.stateOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.exceptions.StateOrderException;
 
 /**
@@ -26,12 +27,12 @@ public class StateAccepted implements StateOrder {
 	}
 
 	@Override
-	public void reject(){
-		// TODO Auto-generated method stub
+	public void reject(Order order){
+		order.setStatus(new StateRejected());
 	}
 
 	@Override
-	public void cancel() throws StateOrderException {
+	public void cancel(Order order) throws StateOrderException {
 		List<String> message = new ArrayList<String>();
 		message.add("The order has already been accepted by Admin, so the delivery is arranged. You can not cancel it.");
 		throw new StateOrderException(message);

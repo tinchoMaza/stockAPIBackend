@@ -1,5 +1,6 @@
 package com.belatrix.interns.StockAPIBackend.entities.stateOrder;
 
+import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.exceptions.StateOrderException;
 
 /**
@@ -8,11 +9,11 @@ import com.belatrix.interns.StockAPIBackend.exceptions.StateOrderException;
 
 public interface StateOrder {
 
-	public void accept();
+	public void accept() throws StateOrderException;
 	
-	public void reject();
+	public void reject(Order order);
 	
-	public void cancel() throws StateOrderException;
+	public void cancel(Order order) throws StateOrderException;
 	
 	public void update() throws StateOrderException;
 	

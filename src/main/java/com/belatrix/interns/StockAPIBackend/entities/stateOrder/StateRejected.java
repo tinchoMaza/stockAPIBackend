@@ -3,6 +3,12 @@
  */
 package com.belatrix.interns.StockAPIBackend.entities.stateOrder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.belatrix.interns.StockAPIBackend.entities.Order;
+import com.belatrix.interns.StockAPIBackend.exceptions.StateOrderException;
+
 /**
  * @author aluna
  *
@@ -13,31 +19,33 @@ public class StateRejected implements StateOrder {
 	 * 
 	 */
 	public StateRejected() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	@Override
-	public void accept() {
-		// TODO Auto-generated method stub
+	public void accept() throws StateOrderException{
+		List<String> message = new ArrayList<String>();
+		message.add("The order has already been rejected by Admin, action that can not be undone.");
+		throw new StateOrderException(message);
+	}
 
+
+	@Override
+	public void update() throws StateOrderException {
+		List<String> message = new ArrayList<String>();
+		message.add("The order has already been rejected by Admin, action that can not be undone.");
+		throw new StateOrderException(message);
 	}
 
 	@Override
-	public void reject() {
-		// TODO Auto-generated method stub
-
+	public void reject(Order order) {
 	}
 
 	@Override
-	public void cancel() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
+	public void cancel(Order order) throws StateOrderException {
+		List<String> message = new ArrayList<String>();
+		message.add("The order has already been rejected by Admin.");
+		throw new StateOrderException(message);
 	}
 
 }
