@@ -1,11 +1,14 @@
 package com.belatrix.interns.StockAPIBackend.controllers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
-
+import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.belatrix.interns.StockAPIBackend.entities.Employee;
 import com.belatrix.interns.StockAPIBackend.exceptions.EmployeeException;
 import com.belatrix.interns.StockAPIBackend.services.EmployeeService;
+import com.belatrix.interns.StockAPIBackend.utils.Validations;
 
 @RestController
 @RequestMapping("/stockAPI/employees")
@@ -60,10 +64,26 @@ public class EmployeeController {
 		return ResponseEntity.ok(emps);
 	}
 	
-	@PostMapping("/")
-	public ResponseEntity<Employee> saveEmployee(@RequestBody @Valid Employee e){
+	@PostMapping(path = "/", consumes = "application/json", produces = {"application/json"})
+	public ResponseEntity<Serializable> saveEmployee(@RequestBody @Valid Employee e) {
 		// no hace falta pasar el id, mongo lo asigna solo y lo devuelve solo
-		return ResponseEntity.ok(empServ.saveEmployee(e));
+		//si lo hacemos por capas debidamente, el objeto que recibe es un employee dto y no el objeto de negocio
+		if(!Validations.validate(e.getMail()) || e.getMail().isBlank()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is not in a valid format or is missing.");
+		}
+		if(e.getArea().isBlank() || e.getNombre().isBlank() || e.getPassword().isBlank()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Area, Name or password is empty.");
+		}
+		Employee em;
+		try {
+			em = empServ.saveEmployee(e);
+			return ResponseEntity.status(HttpStatus.CREATED).body(em);
+		} catch (DuplicateKeyException ex) {
+			//unica posible duplicate key es el mail definido como unique en mongo
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("The indicated email is already registered with another employee");
+		} catch(Exception ex) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("We did something wrong. We'll be notified and we'll look into it. This is the error: " + ex.getMessage());
+		}
 	}
 	
 	@PutMapping("/")
