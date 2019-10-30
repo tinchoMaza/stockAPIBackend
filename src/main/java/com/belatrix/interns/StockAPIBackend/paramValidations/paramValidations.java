@@ -11,17 +11,13 @@ import com.belatrix.interns.StockAPIBackend.entities.Product;
 import com.belatrix.interns.StockAPIBackend.entities.Status;
 
 public final class paramValidations {
-
-	private paramValidations() {
-		
-	}
 	
 	/**
 	 * @param toExamine
 	 * @return
 	 */
-	public boolean containsIllegalsCharacters(String toExamine) {
-		Pattern pattern = Pattern.compile("[0123456789½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°,.:;/!$~#@*+%&()=¿{}<>\\[\\\\]|\"\\_^]");
+	public static boolean containsIllegalsCharacters(String toExamine) {
+		Pattern pattern = Pattern.compile("[½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°,.:;/!$~#@*+%&()=¿{}<>\\[\\\\]|\"\\_^]");
 		Matcher matcher = pattern.matcher(toExamine);
 		return matcher.find();
 	}
@@ -30,13 +26,13 @@ public final class paramValidations {
 	 * @param toExamine
 	 * @return
 	 */
-	public boolean descriptionContainsIllegalsCharacters(String toExamine) {
+	public static boolean descriptionContainsIllegalsCharacters(String toExamine) {
 		Pattern pattern = Pattern.compile("[½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°!$~#@*+%&=¿{}<>\\[\\\\]|\"\\_^]");
 		Matcher matcher = pattern.matcher(toExamine);
 		return matcher.find();
 	}
 	
-	public List<String> productFieldsValidator(Product prod) {
+	public static List<String> productFieldsValidator(Product prod) {
 		// Checks if the fields of the kinship are null or not
 		List<String> messages = new ArrayList<String>();
 		
@@ -59,7 +55,7 @@ public final class paramValidations {
 		return messages;
 	}
 	
-	public List<String> orderParamsValidator(Order order){
+	public static List<String> orderParamsValidator(Order order){
 		List<String> msg = new ArrayList<String>();
 		Status status = order.getStatus();
 		
