@@ -105,11 +105,11 @@ public class OrdersRepositoryTests {
 		List<Product> prods = new ArrayList<Product>();
 		Product prod = new Product("Orange Juice", "For those thirsty bois", 8, 4);
 		prods.add(prod);
-		ObjectId id = new ObjectId("5d9f3b4904cb5731f4643883");
+		ObjectId id = new ObjectId("5db075df3860df3bb8684b7b");
 		Order ord = new Order(Status.A, id, prods, new Date());
-		ObjectId orderId = new ObjectId(ord.getId());
 		
 		this.ordRepository.save(ord);
+		ObjectId orderId = new ObjectId(ord.getId());
 		
 		prods.remove(prod);
 		prod.setStock(30);
