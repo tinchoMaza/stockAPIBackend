@@ -23,28 +23,31 @@ public class StateRejected implements StateOrder {
 	}
 
 	@Override
-	public void accept() throws StateOrderException{
+	public void accept(Order order) throws StateOrderException{
 		List<String> message = new ArrayList<String>();
 		message.add("The order has already been rejected by Admin, action that can not be undone.");
 		throw new StateOrderException(message);
 	}
 
 
-	@Override
-	public void update() throws StateOrderException {
-		List<String> message = new ArrayList<String>();
-		message.add("The order has already been rejected by Admin, action that can not be undone.");
-		throw new StateOrderException(message);
-	}
+	
 
 	@Override
 	public void reject(Order order) {
+		//No logic because this state has already been rejected
 	}
 
 	@Override
 	public void cancel(Order order) throws StateOrderException {
 		List<String> message = new ArrayList<String>();
 		message.add("The order has already been rejected by Admin.");
+		throw new StateOrderException(message);
+	}
+	
+	@Override
+	public void update(Order order) throws StateOrderException {
+		List<String> message = new ArrayList<String>();
+		message.add("The order has already been rejected by Admin, action that can not be undone.");
 		throw new StateOrderException(message);
 	}
 

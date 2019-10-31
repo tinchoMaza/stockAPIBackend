@@ -9,12 +9,12 @@ import com.belatrix.interns.StockAPIBackend.exceptions.StateOrderException;
 
 public interface StateOrder {
 
-	public void accept() throws StateOrderException;
+	public void accept(Order order) throws StateOrderException;
 	
-	public void reject(Order order);
+	public void reject(Order order) throws StateOrderException;
 	
 	public void cancel(Order order) throws StateOrderException;
 	
-	public void update() throws StateOrderException;
+	public void update(Order order) throws StateOrderException;
 	
 }

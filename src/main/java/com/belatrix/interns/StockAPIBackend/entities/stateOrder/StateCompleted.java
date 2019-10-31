@@ -13,43 +13,47 @@ import com.belatrix.interns.StockAPIBackend.exceptions.StateOrderException;
  * @author aluna
  *
  */
-public class StateAccepted implements StateOrder {
+public class StateCompleted implements StateOrder {
 
 	/**
 	 * 
 	 */
-	public StateAccepted() {
+	public StateCompleted() {
 		super();
 	}
-
+	
 	@Override
 	public void accept(Order order) throws StateOrderException {
-		//I use this method to complete an accepted order
-		order.setStatus(new StateCompleted());
+		List<String> message = new ArrayList<String>();
+		message.add("The order has already been dispatched, it is completed.");
+		throw new StateOrderException(message);
+		
 	}
 
 	@Override
-	public void reject(Order order) throws StateOrderException {
-		//This can change in case we decide to start handling
+	public void reject(Order order) throws StateOrderException{
 		List<String> message = new ArrayList<String>();
-		message.add("The order has already been accepted and is about to be dispatched, you can not reject it.");
+		message.add("The order has already been dispatched.");
 		throw new StateOrderException(message);
 	}
 
 	@Override
 	public void cancel(Order order) throws StateOrderException {
-		//This can change in case we decide to start handling
 		List<String> message = new ArrayList<String>();
-		message.add("The order has already been accepted and is about to be dispatched, you can not cancel it.");
+		message.add("The order has already been dispatched.");
 		throw new StateOrderException(message);
+
 	}
 
 	@Override
 	public void update(Order order) throws StateOrderException {
-		//This can change in case we decide to start handling
 		List<String> message = new ArrayList<String>();
-		message.add("The order has already been accepted and is about to be dispatched, you can not update it.");
+		message.add("The order has already been dispatched.");
 		throw new StateOrderException(message);
+
 	}
+
+	
+
 
 }
