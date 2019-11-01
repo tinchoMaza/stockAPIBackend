@@ -13,7 +13,7 @@ public class DepositDAOImpl implements DepositDAO{
 	 */
 	@Override
 	public boolean existReserveStock(Product producto) {
-		if(producto.getStock() > producto.getMinReserveStock()) return true;
+		if(producto.getStock() > producto.getMin_Reserve_Stock()) return true;
 		return false;
 	}
 

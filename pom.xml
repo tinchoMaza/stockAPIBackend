@@ -15,7 +15,7 @@
 	<description>Proyecto de pasantes para poner en practica todo lo visto en cursos durante el tiempo en RDS</description>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>

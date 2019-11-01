@@ -5,17 +5,11 @@ package com.belatrix.interns.StockAPIBackend.entities;
  */
 
 public enum Status {
-	A("Aproved"),
-	R("Rejected"),
-	OH("On Hold");
+	In_Progress,
+	Accepted,
+	Rejected,
+	On_Hold,
+	Canceled,
+	Completed
 	
-	private final String description;
-	
-	private Status(String description) {
-		this.description = description;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
 }
