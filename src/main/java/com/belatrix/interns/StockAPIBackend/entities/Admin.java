@@ -63,13 +63,5 @@ public class Admin implements Serializable{
 		this.ordersToBuy = ordersToBuy;
 	}
 	
-	@Override
-	public String toString() {
-		String ordersId = "";
-		for(Order o: ordersToBuy) {
-			if(o.getStatus().equals(Status.OH))
-				ordersId.concat(o.getId() + ", ");
-		}
-		return "Admin id: " + _id + ", name: " + name +", mail: " + ", orders id to buy: " + ordersId;
-	}
+	
 }
