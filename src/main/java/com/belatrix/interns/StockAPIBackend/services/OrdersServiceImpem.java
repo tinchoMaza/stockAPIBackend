@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.entities.Product;
-import com.belatrix.interns.StockAPIBackend.entities.Status;
+import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateOrder;
 import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.exceptions.OrderException;
 import com.belatrix.interns.StockAPIBackend.paramValidations.*;
@@ -49,7 +49,7 @@ public class OrdersServiceImpem implements OrdersService{
 	}
 
 	@Override
-	public void save(ObjectId empId, List<Product> orderedProds, Status status, Date arrival, Optional<Date> departure) throws InvalidDataException {
+	public void save(ObjectId empId, List<Product> orderedProds, StateOrder status, Date arrival, Optional<Date> departure) throws InvalidDataException {
 		List<String> errorMsgs = new ArrayList<String>();
 		for(Product prod : orderedProds) {
 			errorMsgs = this.valid.productFieldsValidator(prod);
