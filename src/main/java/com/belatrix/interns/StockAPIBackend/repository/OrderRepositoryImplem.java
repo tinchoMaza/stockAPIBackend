@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import com.belatrix.interns.StockAPIBackend.dto.OrderDTO;
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 
 @Repository

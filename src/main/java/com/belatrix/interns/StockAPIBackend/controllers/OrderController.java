@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.belatrix.interns.StockAPIBackend.dto.OrderDTO;
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.exceptions.OrderException;
 import com.belatrix.interns.StockAPIBackend.services.OrderService;
@@ -52,19 +53,19 @@ public class OrderController {
 	}
 	
 	@PostMapping(path = "/", consumes = "application/json", produces = {"application/json"})
-	public ResponseEntity<Serializable> saveOrder (@RequestBody @Valid Order o) {
-		if(o.getId_Employee().isBlank()) { //si no lo manda, se auto-asigna como 0
+	public ResponseEntity<Serializable> saveOrder (@RequestBody @Valid OrderDTO o) {
+		if(o.getId_Employee().isBlank()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Employee id is missing.");
 		}
 		if(o.getOrderedProducts().isEmpty()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You must add at least 1 product to the order.");
 		}
-		if(ordService.existsAnother(o)) {
+		if(ordService.existsAnother(o.toDomain())) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("There is another identical order in progress for the same employee with the same products");
 		}
 		try {
-			o = ordService.saveOrder(o);
-			return ResponseEntity.status(HttpStatus.CREATED).body(o);
+			Order ord = ordService.saveOrder(o);
+			return ResponseEntity.status(HttpStatus.CREATED).body(ord);
 		}  catch (Exception ex) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
 		}

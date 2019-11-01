@@ -31,6 +31,8 @@ public class Order implements Serializable{
 		this.id_employee = id_employee;
 		this.orderedProducts = orderedProducts;
 	}
+	
+	public Order() {}
 
 	public String getId() {
 		return _id.toHexString();

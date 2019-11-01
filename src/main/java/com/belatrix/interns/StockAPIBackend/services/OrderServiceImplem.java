@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.belatrix.interns.StockAPIBackend.dto.OrderDTO;
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.entities.Status;
 import com.belatrix.interns.StockAPIBackend.exceptions.OrderException;
@@ -39,7 +40,8 @@ public class OrderServiceImplem implements OrderService{
 			throw new OrderException("Order with id: " + id + " not found. Please try another id.");
 	}
 
-	public Order saveOrder(Order o) {
+	public Order saveOrder(OrderDTO ord) {
+		Order o = new Order();
 		return this.ordRepo.saveOrder(o);
 	}
 
