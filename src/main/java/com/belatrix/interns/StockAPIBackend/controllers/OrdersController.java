@@ -60,8 +60,6 @@ public class OrdersController {
 			Order ord = this.ordService.findById(id);
 			return ResponseEntity.ok().body(ord);
 		}catch(OrderException ex) {
-			List<String> msgs = new ArrayList<String>();
-			msgs.add(ex.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}

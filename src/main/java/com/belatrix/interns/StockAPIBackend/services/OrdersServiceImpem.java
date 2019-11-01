@@ -35,7 +35,6 @@ import com.belatrix.interns.StockAPIBackend.repository.OrdersRepository;
 public class OrdersServiceImpem implements OrdersService{
 	
 	private OrdersRepository ordRepo;
-	private paramValidations valid;
 	private EmployeeRepository empRepo;
 	
 	@Autowired
@@ -80,7 +79,7 @@ public class OrdersServiceImpem implements OrdersService{
 
 	@Override
 	public void update(ObjectId toUpdateOrd, Order latestOrder) throws InvalidDataException {
-		List<String> errorMsgs = this.valid.orderParamsValidator(latestOrder);
+		List<String> errorMsgs = paramValidations.orderParamsValidator(latestOrder);
 		Optional<Order> oldOrder = this.ordRepo.findById(toUpdateOrd);
 		if(!oldOrder.isPresent()) errorMsgs.add("Order not found, id: " + toUpdateOrd.toString());
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
