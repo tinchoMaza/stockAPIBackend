@@ -14,8 +14,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.belatrix.interns.StockAPIBackend.dto.OrderDTO;
 import com.belatrix.interns.StockAPIBackend.entities.Order;
+import com.belatrix.interns.StockAPIBackend.entities.Status;
 
 @Repository
 public class OrderRepositoryImplem implements OrderRepository{
@@ -49,6 +49,7 @@ public class OrderRepositoryImplem implements OrderRepository{
 	public Order saveOrder(Order o) {
 		int number = this.getLastNumber();
 		o.setNumber(number+1);
+		o.setStatus(Status.On_Hold);
 		this.mongoOp.save(o);
 		return this.findById(o.getId()).get();
 	}

@@ -21,9 +21,9 @@ public class Order implements Serializable{
 	private int number;
 	private Status status;
 	private ObjectId id_employee;
-	private List<Product> orderedProducts;
+	private List<ObjectId> orderedProducts;
 	
-	public Order(ObjectId _id, int number, Status status, ObjectId id_employee, List<Product> orderedProducts) {
+	public Order(ObjectId _id, int number, Status status, ObjectId id_employee, List<ObjectId> orderedProducts) {
 		super();
 		this._id = _id;
 		this.number = number;
@@ -46,17 +46,17 @@ public class Order implements Serializable{
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	public List<Product> getOrderedProducts() {
+	public List<ObjectId> getOrderedProducts() {
 		return orderedProducts;
 	}
-	public void setOrderedProducts(List<Product> orderedProducts) {
+	public void setOrderedProducts(List<ObjectId> orderedProducts) {
 		this.orderedProducts = orderedProducts;
 	}
 	
-	public void addProductToOrder(Product p) {
+	public void addProductToOrder(ObjectId p) {
 		this.orderedProducts.add(p);
 	}
-	public void removeProductFromOrder(Product p) {
+	public void removeProductFromOrder(ObjectId p) {
 		this.orderedProducts.remove(p);
 	}
 	
@@ -72,12 +72,12 @@ public class Order implements Serializable{
 	public void setId_Employee(ObjectId id_employee) {
 		this.id_employee = id_employee;
 	}
-	
+
 	@Override
 	public String toString() {
 		String productsId = "";
-		for(Product p: orderedProducts) {
-			productsId.concat(p.getId() + ", ");
+		for(ObjectId p: orderedProducts) {
+			productsId.concat(p.toHexString() + ", ");
 		}
 		return "Order id: " + _id + ", status: " + status + ", id employee who ordered: " + id_employee + ", id products: " + productsId;
 	}

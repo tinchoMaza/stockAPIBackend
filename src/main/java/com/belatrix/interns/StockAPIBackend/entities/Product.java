@@ -5,7 +5,6 @@ import java.io.Serializable;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @Document(collection = "products")
@@ -24,7 +23,6 @@ public class Product implements Serializable{
 	
 	public Product(ObjectId _id, String name, String description, int stock, int min_reserve_stock) {
 		super();
-		this._id = _id;
 		this.name = name;
 		this.description = description;
 		this.stock = stock;

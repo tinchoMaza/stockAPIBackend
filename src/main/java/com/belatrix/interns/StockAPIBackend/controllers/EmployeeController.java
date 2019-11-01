@@ -24,7 +24,7 @@ import com.belatrix.interns.StockAPIBackend.services.EmployeeService;
 import com.belatrix.interns.StockAPIBackend.utils.Validations;
 
 @RestController
-@RequestMapping("/stockAPI")
+@RequestMapping("/stockAPI/employees")
 public class EmployeeController {
 	
 	private final EmployeeService empServ;
