@@ -29,6 +29,15 @@ public class StateOnHold implements StateOrder {
 		super();
 	}
 	
+	
+	@Override
+	public String toString() {
+		return "StateOnHold";
+	}
+
+
+
+
 	@Override
 	public void accept(Order order) throws StateOrderException {
 		List<Product> products = order.getOrderedProducts();

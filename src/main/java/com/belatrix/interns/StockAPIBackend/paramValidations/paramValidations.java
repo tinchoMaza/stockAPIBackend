@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.entities.Product;
-import com.belatrix.interns.StockAPIBackend.entities.Status;
 
 public final class paramValidations {
 	
@@ -57,11 +56,14 @@ public final class paramValidations {
 	
 	public static List<String> orderParamsValidator(Order order){
 		List<String> msg = new ArrayList<String>();
-		Status status = order.getStatus();
-		
-		if((status != Status.A) && (status != Status.OH) && (status != Status.R)) {
-			msg.add("Invalid status report");
-		}
+		//I comment this part because the validation of the state will be done differently in another
+		//part of the code
+		/*
+		 * Status status = order.getStatus();
+		 * 
+		 * if((status != Status.A) && (status != Status.OH) && (status != Status.R)) {
+		 * msg.add("Invalid status report"); }
+		 */
 		
 		if(!Optional.ofNullable(order.getIdEmployee()).isPresent()) {
 			msg.add("EmployeeID not found");

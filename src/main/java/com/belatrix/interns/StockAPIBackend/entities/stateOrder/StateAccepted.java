@@ -23,6 +23,11 @@ public class StateAccepted implements StateOrder {
 	}
 
 	@Override
+	public String toString() {
+		return "StateAccepted";
+	}
+
+	@Override
 	public void accept(Order order) throws StateOrderException {
 		//I use this method to complete an accepted order
 		order.setStatus(new StateCompleted());

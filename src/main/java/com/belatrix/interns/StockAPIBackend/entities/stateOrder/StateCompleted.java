@@ -22,6 +22,15 @@ public class StateCompleted implements StateOrder {
 		super();
 	}
 	
+	
+	
+	@Override
+	public String toString() {
+		return "StateCompleted";
+	}
+
+
+
 	@Override
 	public void accept(Order order) throws StateOrderException {
 		List<String> message = new ArrayList<String>();

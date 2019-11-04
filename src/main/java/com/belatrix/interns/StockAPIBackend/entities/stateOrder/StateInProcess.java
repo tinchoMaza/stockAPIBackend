@@ -18,6 +18,15 @@ public class StateInProcess implements StateOrder {
 	public StateInProcess() {
 		super();
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "StateInProcess";
+	}
+
+
 
 	@Override
 	public void accept(Order order) throws StateOrderException {

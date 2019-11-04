@@ -22,6 +22,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.entities.Product;
 import com.belatrix.interns.StockAPIBackend.entities.Status;
+import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateOnHold;
+import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateOrder;
 import com.belatrix.interns.StockAPIBackend.repository.OrdersRepository;
 
 /**
@@ -135,6 +137,7 @@ public class OrdersRepositoryTests {
 		Optional<Order> ord = this.ordRepository.findById(id);
 		assertTrue("The order should be found in the database", ord.isPresent());
 	}
+	
 	
 	@Test
 	public void findNonExistingOrderById() {

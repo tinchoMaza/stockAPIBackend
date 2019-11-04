@@ -35,7 +35,7 @@ import com.belatrix.interns.StockAPIBackend.repository.OrdersRepository;
 public class OrdersServiceImpem implements OrdersService{
 	
 	private OrdersRepository ordRepo;
-	private paramValidations valid;
+	private paramValidations validator;
 	private EmployeeRepository empRepo;
 	
 	@Autowired
@@ -52,17 +52,16 @@ public class OrdersServiceImpem implements OrdersService{
 	public void save(ObjectId empId, List<Product> orderedProds, StateOrder status, Date arrival, Optional<Date> departure) throws InvalidDataException {
 		List<String> errorMsgs = new ArrayList<String>();
 		for(Product prod : orderedProds) {
-			errorMsgs = this.valid.productFieldsValidator(prod);
+			errorMsgs = this.validator.productFieldsValidator(prod);
 			if(!errorMsgs.isEmpty()) break;
 		}
 		if(!this.empRepo.findById(empId.toString()).isPresent()) errorMsgs.add("Employee not found in Database");
-		if(status.getDescription().matches("Rejected")) errorMsgs.add("This order has been rejected");
-		if(status.getDescription().matches("On Hold") && departure.isPresent()) errorMsgs.add("On Hold orders cannot have known departure dates");
+		if(status.toString().matches("StateOnHold") && departure.isPresent()) errorMsgs.add("On Hold orders cannot have known departure dates");
 		if(orderedProds.isEmpty()) errorMsgs.add("No products have been selected");
 		if(errorMsgs.size() > 0) throw new InvalidDataException(errorMsgs);
 		
 		Order o = new Order(status, empId, orderedProds, arrival);
-		if(status.getDescription().matches("Accepted") && departure.isPresent()) o.setDeparture_date(departure.get());
+		if(departure.isPresent()) o.setDeparture_date(departure.get());
 		this.ordRepo.save(o);
 	}
 
@@ -80,7 +79,7 @@ public class OrdersServiceImpem implements OrdersService{
 
 	@Override
 	public void update(ObjectId toUpdateOrd, Order latestOrder) throws InvalidDataException {
-		List<String> errorMsgs = this.valid.orderParamsValidator(latestOrder);
+		List<String> errorMsgs = this.validator.orderParamsValidator(latestOrder);
 		Optional<Order> oldOrder = this.ordRepo.findById(toUpdateOrd);
 		if(!oldOrder.isPresent()) errorMsgs.add("Order not found, id: " + toUpdateOrd.toString());
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
