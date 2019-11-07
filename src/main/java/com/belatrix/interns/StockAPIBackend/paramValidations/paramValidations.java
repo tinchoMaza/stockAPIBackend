@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.belatrix.interns.StockAPIBackend.entities.Admin;
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.entities.Product;
 import com.belatrix.interns.StockAPIBackend.entities.Status;
@@ -16,8 +17,8 @@ public final class paramValidations {
 	 * @param toExamine
 	 * @return
 	 */
-	public static boolean containsIllegalsCharacters(String toExamine) {
-		Pattern pattern = Pattern.compile("[½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°,.:;/!$~#@*+%&()=¿{}<>\\[\\\\]|\"\\_^]");
+	public static boolean nameContainsIllegalsCharacters(String toExamine) {
+		Pattern pattern = Pattern.compile("[0123456789½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°,.:;/!$~#@*+%&()=¿{}<>\\[\\\\]|\"\\_^]");
 		Matcher matcher = pattern.matcher(toExamine);
 		return matcher.find();
 	}
@@ -32,11 +33,17 @@ public final class paramValidations {
 		return matcher.find();
 	}
 	
+	public static boolean mailContainsIllegalCharacters(String toExamine) {
+		Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(toExamine);
+		return matcher.find();
+	}
+	
 	public static List<String> productFieldsValidator(Product prod) {
 		// Checks if the fields of the kinship are null or not
 		List<String> messages = new ArrayList<String>();
 		
-		if ((prod.getName().compareTo("") == 0) || containsIllegalsCharacters(prod.getName())) {
+		if ((prod.getName().compareTo("") == 0) || descriptionContainsIllegalsCharacters(prod.getName())) {
 			messages.add("Invalid/Empty name field for product");
 		}
 		
@@ -77,6 +84,23 @@ public final class paramValidations {
 			}
 		}
 		
+		return msg;
+	}
+	
+	public static List<String> adminParamsValidator(Admin a){
+		List<String> msg = new ArrayList<String>();
+		
+		if(nameContainsIllegalsCharacters(a.getName())) {
+			msg.add("Invalid data name format");
+		}
+		
+		if(mailContainsIllegalCharacters(a.getMail())) {
+			msg.add("Invalid data mail format");
+		}
+		
+		if(descriptionContainsIllegalsCharacters(a.getPassword())) {
+			msg.add("Invalid password format");
+		}
 		return msg;
 	}
 }

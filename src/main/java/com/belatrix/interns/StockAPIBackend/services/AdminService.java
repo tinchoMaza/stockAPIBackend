@@ -14,7 +14,7 @@ public interface AdminService {
 	
 	Admin findByMail(String mail) throws InvalidDataException;
 	
-	public Admin save(String id) throws InvalidDataException;
+	public Admin save(Admin a);
 	
 	public void delete(String id) throws InvalidDataException;
 	
