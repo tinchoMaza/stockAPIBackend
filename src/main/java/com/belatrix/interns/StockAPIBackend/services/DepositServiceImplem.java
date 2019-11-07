@@ -87,7 +87,7 @@ public class DepositServiceImplem implements DepositService {
 	@Override
 	public boolean checkReserveStock(String id) throws ProductException {
 		Optional<Product> prod = depRepo.findById(id);
-		if(!prod.isPresent()) throw new ProductException("No product stored for this id: " + id);
+		if(!prod.isPresent()) throw new ProductException("No product stored for this id");
 		return depRepo.checkReserveStock(prod.get());
 	}
 
