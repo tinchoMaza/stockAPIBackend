@@ -58,4 +58,10 @@ public class EmployeeRepositoryImplem implements EmployeeRepository {
 		this.mongoOp.save(e);
 	}
 
+	@Override
+	public Optional<Employee> findByMail(String mail) {
+		Employee e = this.mongoOp.findOne(new Query(Criteria.where("mail").is(mail)), Employee.class);
+		return Optional.ofNullable(e);
+	}
+
 }

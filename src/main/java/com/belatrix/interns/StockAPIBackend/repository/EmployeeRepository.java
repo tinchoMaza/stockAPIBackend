@@ -15,6 +15,8 @@ public interface EmployeeRepository {
 	
 	Optional<List<Employee>> findByArea (String area);
 	
+	Optional<Employee> findByMail(String mail);
+	
 	public Employee saveEmployee(Employee e);
 	
 	public void deleteEmployee(String id);

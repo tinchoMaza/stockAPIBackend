@@ -10,6 +10,7 @@ public interface EmployeeService {
 	List<Employee> getAllEmployees();
 	Employee findById(String id) throws EmployeeException;
 	Employee findByName(String name) throws EmployeeException;
+	Employee findByMail(String mail) throws EmployeeException;
 	List<Employee> findByArea (String area) throws EmployeeException;
 	public Employee saveEmployee(Employee e);
 	public void deleteEmployee(String id);

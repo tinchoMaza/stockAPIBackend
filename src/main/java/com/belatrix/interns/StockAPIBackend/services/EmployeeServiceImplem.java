@@ -63,4 +63,11 @@ public class EmployeeServiceImplem implements EmployeeService {
 		empRepo.updateEmployee(e);
 	}
 
+	@Override
+	public Employee findByMail(String mail) throws EmployeeException {
+		Optional<Employee> e = empRepo.findByMail(mail);
+		if(e.isPresent()) return e.get();
+		throw new EmployeeException("Employee with mail: " + mail + " not found. Please try again");
+	}
+
 }
