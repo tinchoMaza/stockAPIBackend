@@ -38,7 +38,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product findById(String id) throws ProductException {
-		if(paramValidations.descriptionContainsIllegalsCharacters(id)) throw new ProductException("No product stored for this id: " + id);
+		if(ParamValidator.descriptionContainsIllegalsCharacters(id)) throw new ProductException("No product stored for this id: " + id);
 		Optional<Product> prod = depRepo.findById(id);
 		if(!prod.isPresent()) throw new ProductException("No product stored for this id: " + id);
 		return prod.get();
@@ -46,7 +46,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product findByName(String name) throws ProductException {
-		if(paramValidations.containsIllegalsCharacters(name)) throw new ProductException("There is no " + name + " in stock");
+		if(ParamValidator.containsIllegalsCharacters(name)) throw new ProductException("There is no " + name + " in stock");
 		Optional<Product> prod = depRepo.findByName(name);
 		if(!prod.isPresent()) {
 			throw new ProductException("There is no " + name + " in stock");
@@ -56,7 +56,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product saveProduct(Product p) throws InvalidDataException{
-		List<String> errorMsgs = paramValidations.productFieldsValidator(p);
+		List<String> errorMsgs = ParamValidator.productFieldsValidator(p);
 		if(this.depRepo.findByName(p.getName()).isPresent()) errorMsgs.add("Duplicated product! This one already exists in Database. You can update it instead");
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
 		Optional<Product> checkProd = this.depRepo.saveProduct(p);
@@ -69,13 +69,13 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public void deleteProduct(String id) throws ProductException {
-		if(paramValidations.descriptionContainsIllegalsCharacters(id) || !this.depRepo.findById(id).isPresent()) throw new ProductException("No product stored for this id");
+		if(ParamValidator.descriptionContainsIllegalsCharacters(id) || !this.depRepo.findById(id).isPresent()) throw new ProductException("No product stored for this id");
 		depRepo.deleteProduct(id);
 	}
 
 	@Override
 	public void updateProduct(String id, Product p) throws InvalidDataException{
-		List<String> errorMsgs = paramValidations.productFieldsValidator(p);
+		List<String> errorMsgs = ParamValidator.productFieldsValidator(p);
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
 		if(!this.depRepo.findById(id).isPresent()) {
 			errorMsgs.add("Invalid id, cannot update this product");

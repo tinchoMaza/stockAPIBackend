@@ -35,7 +35,7 @@ import com.belatrix.interns.StockAPIBackend.repository.OrdersRepository;
 public class OrdersServiceImpem implements OrdersService{
 	
 	private OrdersRepository ordRepo;
-	private paramValidations validator;
+	private ParamValidator validator;
 	private EmployeeRepository empRepo;
 	
 	@Autowired

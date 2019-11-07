@@ -8,8 +8,13 @@ import java.util.regex.Pattern;
 
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.entities.Product;
+import com.belatrix.interns.StockAPIBackend.entities.Supplier;
 
-public final class paramValidations {
+/**
+ * @author aluna
+ *
+ */
+public final class ParamValidator {
 	
 	/**
 	 * @param toExamine
@@ -30,7 +35,10 @@ public final class paramValidations {
 		Matcher matcher = pattern.matcher(toExamine);
 		return matcher.find();
 	}
-	
+	/**
+	 * @param prod
+	 * @return
+	 */
 	public static List<String> productFieldsValidator(Product prod) {
 		// Checks if the fields of the kinship are null or not
 		List<String> messages = new ArrayList<String>();
@@ -54,16 +62,13 @@ public final class paramValidations {
 		return messages;
 	}
 	
+	/**
+	 * @param order
+	 * @return
+	 */
 	public static List<String> orderParamsValidator(Order order){
 		List<String> msg = new ArrayList<String>();
-		//I comment this part because the validation of the state will be done differently in another
-		//part of the code
-		/*
-		 * Status status = order.getStatus();
-		 * 
-		 * if((status != Status.A) && (status != Status.OH) && (status != Status.R)) {
-		 * msg.add("Invalid status report"); }
-		 */
+		
 		
 		if(!Optional.ofNullable(order.getIdEmployee()).isPresent()) {
 			msg.add("EmployeeID not found");
@@ -80,5 +85,10 @@ public final class paramValidations {
 		}
 		
 		return msg;
+	}
+	
+	public static List<String> supplierParamsValidation(Supplier supplier){
+		
+		return null;
 	}
 }
