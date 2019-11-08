@@ -53,7 +53,7 @@ public class SuppliersController {
 		return ResponseEntity.ok(suppliers);
 	}
 	
-	@GetMapping("{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<Supplier> findById(@PathVariable String id){
 		try {
 			Supplier supplier = this.supService.findById(id);
@@ -63,7 +63,7 @@ public class SuppliersController {
 		}
 	}
 	
-	@GetMapping("{name}")
+	@GetMapping("/name/{name}")
 	public ResponseEntity<Supplier> findByName(@PathVariable String name){
 		try {
 			Supplier supplier = this.supService.findByName(name);
@@ -73,7 +73,7 @@ public class SuppliersController {
 		}
 	}
 	
-	@PutMapping("{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<List<String>> update(@PathVariable String id, @RequestBody Supplier newData){
 		try {
 			this.supService.update(id, newData);
@@ -84,7 +84,7 @@ public class SuppliersController {
 		}
 	}
 	
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<List<String>> delete(@PathVariable String id){
 		try {
 			this.supService.delete(id);
