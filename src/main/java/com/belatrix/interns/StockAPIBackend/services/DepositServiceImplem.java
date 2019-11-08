@@ -46,7 +46,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product findByName(String name) throws ProductException {
-		if(paramValidations.containsIllegalsCharacters(name)) throw new ProductException("There is no " + name + " in stock");
+		if(paramValidations.nameContainsIllegalsCharacters(name)) throw new ProductException("There is no " + name + " in stock");
 		Optional<Product> prod = depRepo.findByName(name);
 		if(!prod.isPresent()) {
 			throw new ProductException("There is no " + name + " in stock");

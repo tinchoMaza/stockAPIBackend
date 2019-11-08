@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.belatrix.interns.StockAPIBackend.entities.Admin;
+import com.belatrix.interns.StockAPIBackend.entities.Employee;
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.entities.Product;
 import com.belatrix.interns.StockAPIBackend.entities.Status;
@@ -100,6 +101,27 @@ public final class paramValidations {
 		
 		if(descriptionContainsIllegalsCharacters(a.getPassword()) || a.getPassword().isEmpty()) {
 			msg.add("Invalid password format");
+		}
+		return msg;
+	}
+	
+	public static List<String> empParamsValidator(Employee e){
+		List<String> msg = new ArrayList<String>();
+		
+		if(nameContainsIllegalsCharacters(e.getNombre()) || e.getNombre().isEmpty()) {
+			msg.add("Invalid data name format");
+		}
+		
+		if(mailContainsIllegalCharacters(e.getMail()) || e.getMail().isEmpty()) {
+			msg.add("Invalid data mail format");
+		}
+		
+		if(descriptionContainsIllegalsCharacters(e.getPassword()) || e.getPassword().isEmpty()) {
+			msg.add("Invalid password format");
+		}
+		
+		if(descriptionContainsIllegalsCharacters(e.getArea()) || e.getArea().isEmpty()) {
+			msg.add("Invalid area format");
 		}
 		return msg;
 	}

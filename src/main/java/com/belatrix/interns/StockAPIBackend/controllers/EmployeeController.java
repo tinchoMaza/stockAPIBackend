@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.belatrix.interns.StockAPIBackend.entities.Employee;
 import com.belatrix.interns.StockAPIBackend.exceptions.EmployeeException;
+import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.services.EmployeeService;
 import com.belatrix.interns.StockAPIBackend.utils.Validations;
 
@@ -87,14 +88,22 @@ public class EmployeeController {
 	}
 	
 	@PutMapping("/{_id}")
-	public ResponseEntity<Employee> updateEmployee(@PathVariable String _id, @RequestBody @Valid Employee e){
-		//hay que mandarle el id, si no te crea uno nuevo con otro id
-		return ResponseEntity.ok(empServ.saveEmployee(_id, e));
+	public ResponseEntity<List<String>> updateEmployee(@PathVariable String _id, @RequestBody @Valid Employee e){
+		try {
+			this.empServ.updateEmployee(_id, e);
+			return ResponseEntity.ok().body(new ArrayList<String>());
+		}catch(InvalidDataException ex) {
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ex.getMessages());
+		}
 	}
 	
 	@DeleteMapping("/{_id}")
-	public ResponseEntity<Void> deleteEmployee(@PathVariable String _id){
-		empServ.deleteEmployee(_id);
+	public ResponseEntity<String> deleteEmployee(@PathVariable String _id){
+		try {
+			empServ.deleteEmployee(_id);
+		} catch (InvalidDataException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("This employee cannot be found in database");
+		}
 		return ResponseEntity.noContent().build();
 	}
 

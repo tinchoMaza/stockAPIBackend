@@ -14,6 +14,6 @@ public interface EmployeeService {
 	Employee findByMail(String mail) throws EmployeeException;
 	List<Employee> findByArea (String area) throws EmployeeException;
 	public Employee saveEmployee(Employee e);
-	public void deleteEmployee(String id);
+	public void deleteEmployee(String id) throws InvalidDataException;
 	public void updateEmployee(String id, Employee e) throws InvalidDataException;
 }
