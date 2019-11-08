@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.belatrix.interns.StockAPIBackend.entities.Employee;
 import com.belatrix.interns.StockAPIBackend.exceptions.EmployeeException;
+import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 
 public interface EmployeeService {
 	
@@ -14,5 +15,5 @@ public interface EmployeeService {
 	List<Employee> findByArea (String area) throws EmployeeException;
 	public Employee saveEmployee(Employee e);
 	public void deleteEmployee(String id);
-	public void updateEmployee(Employee e);
+	public void updateEmployee(String id, Employee e) throws InvalidDataException;
 }

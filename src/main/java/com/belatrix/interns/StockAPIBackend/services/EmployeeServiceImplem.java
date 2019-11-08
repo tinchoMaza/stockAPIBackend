@@ -59,7 +59,7 @@ public class EmployeeServiceImplem implements EmployeeService {
 		empRepo.deleteEmployee(id);
 	}
 
-	public void updateEmployee(Employee e) {
+	public void updateEmployee(String id, Employee e) {
 		empRepo.updateEmployee(e);
 	}
 

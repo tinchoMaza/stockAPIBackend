@@ -21,6 +21,6 @@ public interface EmployeeRepository {
 	
 	public void deleteEmployee(String id);
 	
-	public void updateEmployee(Employee e);
+	public void updateEmployee(String id, Employee e);
 
 }

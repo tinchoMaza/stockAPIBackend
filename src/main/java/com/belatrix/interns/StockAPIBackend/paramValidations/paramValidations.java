@@ -90,15 +90,15 @@ public final class paramValidations {
 	public static List<String> adminParamsValidator(Admin a){
 		List<String> msg = new ArrayList<String>();
 		
-		if(nameContainsIllegalsCharacters(a.getName())) {
+		if(nameContainsIllegalsCharacters(a.getName()) || a.getName().isEmpty()) {
 			msg.add("Invalid data name format");
 		}
 		
-		if(mailContainsIllegalCharacters(a.getMail())) {
+		if(mailContainsIllegalCharacters(a.getMail()) || a.getMail().isEmpty()) {
 			msg.add("Invalid data mail format");
 		}
 		
-		if(descriptionContainsIllegalsCharacters(a.getPassword())) {
+		if(descriptionContainsIllegalsCharacters(a.getPassword()) || a.getPassword().isEmpty()) {
 			msg.add("Invalid password format");
 		}
 		return msg;

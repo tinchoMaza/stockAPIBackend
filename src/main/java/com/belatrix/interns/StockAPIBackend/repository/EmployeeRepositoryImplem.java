@@ -53,9 +53,13 @@ public class EmployeeRepositoryImplem implements EmployeeRepository {
 		this.mongoOp.findAndRemove(new Query(Criteria.where("_id").is(_id)), Employee.class);
 	}
 	
-	public void updateEmployee(Employee e) {
-		//el save tambien hace el update. HAY QUE PASARLE EL ID SI O SI !!
-		this.mongoOp.save(e);
+	public void updateEmployee(String id, Employee e){
+		Employee emp = this.findById(id).get();
+		emp.setArea(e.getArea());
+		emp.setMail(e.getMail());
+		emp.setNombre(e.getNombre());
+		emp.setPassword(e.getPassword());
+		this.mongoOp.save(emp, "employees");
 	}
 
 	@Override

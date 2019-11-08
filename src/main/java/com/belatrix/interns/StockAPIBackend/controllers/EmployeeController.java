@@ -86,10 +86,10 @@ public class EmployeeController {
 		}
 	}
 	
-	@PutMapping("/")
-	public ResponseEntity<Employee> updateEmployee(@RequestBody @Valid Employee e){
+	@PutMapping("/{_id}")
+	public ResponseEntity<Employee> updateEmployee(@PathVariable String _id, @RequestBody @Valid Employee e){
 		//hay que mandarle el id, si no te crea uno nuevo con otro id
-		return ResponseEntity.ok(empServ.saveEmployee(e));
+		return ResponseEntity.ok(empServ.saveEmployee(_id, e));
 	}
 	
 	@DeleteMapping("/{_id}")
