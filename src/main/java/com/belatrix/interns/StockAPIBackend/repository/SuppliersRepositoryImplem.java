@@ -33,7 +33,7 @@ public class SuppliersRepositoryImplem implements SuppliersRepository {
 	}
 	
 	@Override
-	public List<Supplier> findAllSuppliers() {
+	public List<Supplier> findAll() {
 		List<Supplier> suppliers = this.mongoOp.findAll(Supplier.class, "suppliers");
 		return suppliers;
 	}
@@ -52,20 +52,30 @@ public class SuppliersRepositoryImplem implements SuppliersRepository {
 	}
 
 	@Override
-	public Optional<Supplier> saveSupplier(Supplier sup) {
+	public Optional<Supplier> save(Supplier sup) {
 		Supplier savedSup = this.mongoOp.save(sup);
 		return findById(savedSup.getId());
 	}
 
 	@Override
-	public void deleteSupplier(String id) {
+	public void delete(String id) {
 		ObjectId _id = new ObjectId(id);
 		this.mongoOp.findAndRemove(new Query(Criteria.where("_id").is(_id)), Supplier.class);
 	}
 	
 	@Override
-	public void updateSupplier(Supplier sup) {
+	public void update(Supplier sup) {
 		this.mongoOp.findAndReplace(new Query(Criteria.where("name").is(sup.getName())), sup);
+	}
+	
+	@Override
+	public void update(String orderId, Supplier newData) {
+		Supplier updatedSupplier = findById(orderId).get();
+		updatedSupplier.setName(newData.getName());
+		updatedSupplier.setPhoneNumber(newData.getPhoneNumber());
+		updatedSupplier.setWebUrl(newData.getWebUrl());
+		updatedSupplier.setMail(newData.getMail());
+		this.mongoOp.save(updatedSupplier, "orders");
 	}
 
 }

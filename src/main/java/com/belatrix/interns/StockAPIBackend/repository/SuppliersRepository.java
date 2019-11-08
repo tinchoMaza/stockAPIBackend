@@ -14,16 +14,18 @@ import com.belatrix.interns.StockAPIBackend.entities.Supplier;
  */
 public interface SuppliersRepository {
 	
-	public List<Supplier> findAllSuppliers();
+	public List<Supplier> findAll();
 	
 	public Optional<Supplier> findById(String id);
 	
 	public Optional<Supplier> findByName(String name);
-	
-	public Optional<Supplier> saveSupplier(Supplier sup);
-	
-	public void deleteSupplier(String id);
-	
-	public void updateSupplier(Supplier sup);
+
+	Optional<Supplier> save(Supplier sup);
+
+	void delete(String id);
+
+	void update(Supplier sup);
+
+	void update(String orderId, Supplier newData);
 
 }

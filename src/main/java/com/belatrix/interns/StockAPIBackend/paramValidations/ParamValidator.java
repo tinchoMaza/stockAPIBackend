@@ -16,6 +16,8 @@ import com.belatrix.interns.StockAPIBackend.entities.Supplier;
  */
 public final class ParamValidator {
 	
+	//Attribute used for the mail validation
+	private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 	/**
 	 * @param toExamine
 	 * @return
@@ -25,7 +27,6 @@ public final class ParamValidator {
 		Matcher matcher = pattern.matcher(toExamine);
 		return matcher.find();
 	}
-	
 	/**
 	 * @param toExamine
 	 * @return
@@ -33,6 +34,14 @@ public final class ParamValidator {
 	public static boolean descriptionContainsIllegalsCharacters(String toExamine) {
 		Pattern pattern = Pattern.compile("[½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°!$~#@*+%&=¿{}<>\\[\\\\]|\"\\_^]");
 		Matcher matcher = pattern.matcher(toExamine);
+		return matcher.find();
+	}
+	/**
+	 * @param emailStr
+	 * @return
+	 */	
+	public static boolean emailIsCorrect(String email) {
+		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
 		return matcher.find();
 	}
 	/**
@@ -86,9 +95,27 @@ public final class ParamValidator {
 		
 		return msg;
 	}
-	
+	/**
+	 * @param supplier
+	 * @return
+	 */
 	public static List<String> supplierParamsValidation(Supplier supplier){
-		
-		return null;
+		List<String> msg = new ArrayList<String>();
+		if(!emailIsCorrect(supplier.getMail()) || (supplier.getMail().compareTo("") == 0)) {
+			msg.add("The email provided for the supplier is invalid or empty.");
+		}
+		if((supplier.getName().compareTo("") == 0)) {
+			msg.add("The name of the supplier is empty.");
+		}
+		if( containsIllegalsCharacters(supplier.getName())) {
+			msg.add("The name of the supplier contains illegal characters.");
+		}
+		if((supplier.getWebUrl().compareTo("") == 0)) {
+			msg.add("The webUrl of the supplier is empty.");
+		}
+		if(supplier.getPhoneNumber().compareTo("") == 0) {
+			msg.add("The phone number is empty");
+		}
+		return msg;
 	}
 }
