@@ -1,6 +1,5 @@
 package com.belatrix.interns.StockAPIBackend.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,19 +24,20 @@ public class EmployeeServiceImplem implements EmployeeService {
 		this.empRepo = empRepo;
 	}
 
+	@Override
 	public List<Employee> getAllEmployees() {
 		Optional<List<Employee>> emps = empRepo.getAllEmployees();
 		return emps.get();
 	}
 
+	@Override
 	public Employee findById(String id) throws EmployeeException {
 		Optional<Employee> emp = empRepo.findById(id);
-		if (emp.isPresent())
-			return emp.get();
-		else
-			throw new EmployeeException("Employee with id: " + id + " not found. Please try another id.");
+		if (emp.isPresent()) return emp.get();
+		throw new EmployeeException("Employee with id: " + id + " not found. Please try another id.");
 	}
 
+	@Override
 	public Employee findByName(String name) throws EmployeeException {
 		Optional<Employee> emp = empRepo.findByName(name);
 		if (emp.isPresent())
@@ -46,30 +46,28 @@ public class EmployeeServiceImplem implements EmployeeService {
 			throw new EmployeeException("Employee with name: " + name + " not found. Please try another name.");
 	}
 
+	@Override
 	public List<Employee> findByArea(String area) throws EmployeeException {
 		Optional<List<Employee>> emp = empRepo.findByArea(area);
-		if (emp.isPresent())
-			return emp.get();
-		else
-			throw new EmployeeException("Employees with area: " + area + " not found. Please try another area.");
+		if (!emp.get().isEmpty()) return emp.get();
+		throw new EmployeeException("Employees with area: " + area + " not found. Please try another area.");
 	}
 
-	public Employee saveEmployee(Employee e) {
+	@Override
+	public Employee saveEmployee(Employee e) throws InvalidDataException {
+		List<String> msgs = paramValidations.empParamsValidator(e); 
+		if(!msgs.isEmpty()) throw new InvalidDataException(msgs);
 		return empRepo.saveEmployee(e);
 	}
 
-	public void deleteEmployee(String id) throws InvalidDataException{
-		try {
-			@SuppressWarnings("unused")
-			Optional<Employee> e = this.empRepo.findById(id);
-		}catch(EmployeeException ex){
-			List<String> msgs = new ArrayList<String>();
-			msgs.add(ex.getMessage());
-			throw new InvalidDataException(msgs);
-		}
+	@Override
+	public void deleteEmployee(String id) throws EmployeeException{
+		Optional<Employee> e = this.empRepo.findById(id);
+		if(!e.isPresent()) throw new EmployeeException("Employee with this ID is not found in DataBase");
 		empRepo.deleteEmployee(id);
 	}
 
+	@Override
 	public void updateEmployee(String id, Employee e) throws InvalidDataException {
 		List<String> msgs = paramValidations.empParamsValidator(e);
 		if(!msgs.isEmpty()) throw new InvalidDataException(msgs);

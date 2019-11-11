@@ -100,7 +100,7 @@ public class EmployeeRepositoryTests {
 	@Test
 	public final void testFindByArea_whenEmployeeDoesntExist() {
 		Optional<List<Employee>> e = this.empRepo.findByArea("Cocina");
-		assertTrue("El empleado no fue encontrado", !e.isPresent());
+		assertTrue("No existe el area de trabajo, la lista debe estar vacia", e.get().isEmpty());
 	}
 	
 	public final void testFindByAll() {
@@ -127,6 +127,18 @@ public class EmployeeRepositoryTests {
 		assertTrue("Employee was added and deleted with no issues", errorCounter.isEmpty());
 	}
 	
+	@Test
+	public final void testUpdateEmployee_withValidParameters() {
+		Employee e = new Employee(new ObjectId(), "Scorpio", "Seguridad", "mortal.kombat@gmail.com", "getOverHere");
+		Employee check = this.empRepo.saveEmployee(e);
+		
+		Employee emp = new Employee(new ObjectId(), "Jhonny Cage", "Seguridad", "j.cage@gmail.com", "fatality");
+		this.empRepo.updateEmployee(e.getId(), emp);
+		boolean condition = !check.getNombre().equalsIgnoreCase(emp.getNombre());
+		this.empRepo.deleteEmployee(e.getId());
+		
+		assertTrue("The employee was successfuly updated", condition);
+	}
 	
 	
 }

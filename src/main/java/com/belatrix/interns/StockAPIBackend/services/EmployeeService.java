@@ -13,7 +13,7 @@ public interface EmployeeService {
 	Employee findByName(String name) throws EmployeeException;
 	Employee findByMail(String mail) throws EmployeeException;
 	List<Employee> findByArea (String area) throws EmployeeException;
-	public Employee saveEmployee(Employee e);
-	public void deleteEmployee(String id) throws InvalidDataException;
+	public Employee saveEmployee(Employee e) throws InvalidDataException;
+	public void deleteEmployee(String id) throws EmployeeException;
 	public void updateEmployee(String id, Employee e) throws InvalidDataException;
 }

@@ -21,7 +21,7 @@ import com.belatrix.interns.StockAPIBackend.paramValidations.*;
 @Service("depositService")
 @Transactional
 public class DepositServiceImplem implements DepositService {
-
+	
 	private DepositRepository depRepo;
 	
 	@Autowired
