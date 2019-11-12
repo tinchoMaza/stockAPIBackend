@@ -21,6 +21,11 @@ public class StateCancelled implements StateOrder {
 	public StateCancelled() {
 		super();
 	}
+	
+	@Override
+	public String toString() {
+		return "StateCancelled";
+	}
 
 	@Override
 	public void accept(Order order) throws StateOrderException {

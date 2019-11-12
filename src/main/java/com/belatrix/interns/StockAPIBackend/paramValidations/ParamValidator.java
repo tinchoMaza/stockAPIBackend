@@ -12,34 +12,47 @@ import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateAccepted;
 import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateOnHold;
 import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateOrder;
 import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateRejected;
+import com.belatrix.interns.StockAPIBackend.entities.Supplier;
 
-public final class paramValidations {
-
-	private paramValidations() {
-		
-	}
+/**
+ * @author aluna
+ *
+ */
+public final class ParamValidator {
 	
+	//Attribute used for the mail validation
+	private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 	/**
 	 * @param toExamine
 	 * @return
 	 */
-	public boolean containsIllegalsCharacters(String toExamine) {
-		Pattern pattern = Pattern.compile("[0123456789½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°,.:;/!$~#@*+%&()=¿{}<>\\[\\\\]|\"\\_^]");
+	public static boolean containsIllegalsCharacters(String toExamine) {
+		Pattern pattern = Pattern.compile("[½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°,.:;/!$~#@*+%&()=¿{}<>\\[\\\\]|\"\\_^]");
 		Matcher matcher = pattern.matcher(toExamine);
 		return matcher.find();
 	}
-	
 	/**
 	 * @param toExamine
 	 * @return
 	 */
-	public boolean descriptionContainsIllegalsCharacters(String toExamine) {
+	public static boolean descriptionContainsIllegalsCharacters(String toExamine) {
 		Pattern pattern = Pattern.compile("[½¼≤√ⁿ²ƒ±₧÷'£╛╜╧⌐╕ªº°!$~#@*+%&=¿{}<>\\[\\\\]|\"\\_^]");
 		Matcher matcher = pattern.matcher(toExamine);
 		return matcher.find();
 	}
-	
-	public List<String> productFieldsValidator(Product prod) {
+	/**
+	 * @param emailStr
+	 * @return
+	 */	
+	public static boolean emailIsCorrect(String email) {
+		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+		return matcher.find();
+	}
+	/**
+	 * @param prod
+	 * @return
+	 */
+	public static List<String> productFieldsValidator(Product prod) {
 		// Checks if the fields of the kinship are null or not
 		List<String> messages = new ArrayList<String>();
 		
@@ -62,11 +75,18 @@ public final class paramValidations {
 		return messages;
 	}
 	
-	public List<String> orderParamsValidator(Order order){
+	/**
+	 * @param order
+	 * @return
+	 */
+	public static List<String> orderParamsValidator(Order order){
 		List<String> msg = new ArrayList<String>();
 		StateOrder status = order.getStatus();
 		if((!(status.equals(new StateAccepted()))) && (!(status.equals(new StateOnHold()))) && (!(status.equals(new StateRejected())))) {
 			msg.add("Invalid status report");
+		}
+		if(!Optional.ofNullable(order.getEmployee()).isPresent()) {
+			msg.add("Employee not found");
 		}
 		if(!Optional.ofNullable(order.getEmployee()).isPresent()) {
 			msg.add("Employee not found");
@@ -78,6 +98,29 @@ public final class paramValidations {
 			if(order.getArrival_date().compareTo(order.getDeparture_date()) > 0) {
 				msg.add("Invalid departure date");
 			}
+		}
+		return msg;
+	}
+	/**
+	 * @param supplier
+	 * @return
+	 */
+	public static List<String> supplierParamsValidation(Supplier supplier){
+		List<String> msg = new ArrayList<String>();
+		if(!emailIsCorrect(supplier.getMail()) || (supplier.getMail().compareTo("") == 0)) {
+			msg.add("The email provided for the supplier is invalid or empty.");
+		}
+		if((supplier.getName().compareTo("") == 0)) {
+			msg.add("The name of the supplier is empty.");
+		}
+		if( containsIllegalsCharacters(supplier.getName())) {
+			msg.add("The name of the supplier contains illegal characters.");
+		}
+		if((supplier.getWebUrl().compareTo("") == 0)) {
+			msg.add("The webUrl of the supplier is empty.");
+		}
+		if(supplier.getPhoneNumber().compareTo("") == 0) {
+			msg.add("The phone number is empty");
 		}
 		return msg;
 	}

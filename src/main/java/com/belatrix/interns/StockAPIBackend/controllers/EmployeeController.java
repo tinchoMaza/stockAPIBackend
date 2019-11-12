@@ -67,10 +67,10 @@ public class EmployeeController {
 	public ResponseEntity<Serializable> saveEmployee(@RequestBody @Valid Employee e) {
 		// no hace falta pasar el id, mongo lo asigna solo y lo devuelve solo
 		//si lo hacemos por capas debidamente, el objeto que recibe es un employee dto y no el objeto de negocio
-		if(!Validations.validate(e.getMail()) || e.getMail().isBlank()) {
+		if(!Validations.validate(e.getMail()) || e.getMail().isEmpty()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is not in a valid format or is missing.");
 		}
-		if(e.getArea().isBlank() || e.getNombre().isBlank() || e.getPassword().isBlank()) {
+		if(e.getArea().isEmpty() || e.getNombre().isEmpty() || e.getPassword().isEmpty()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Area, Name or password is empty.");
 		}
 		Employee em;

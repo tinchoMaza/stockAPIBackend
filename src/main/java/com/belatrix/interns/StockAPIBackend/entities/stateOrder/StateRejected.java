@@ -21,6 +21,15 @@ public class StateRejected implements StateOrder {
 	public StateRejected() {
 		super();
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "StateRejected";
+	}
+
+
 
 	@Override
 	public void accept(Order order) throws StateOrderException{

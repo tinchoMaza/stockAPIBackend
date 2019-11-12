@@ -47,18 +47,27 @@ public class DepositController {
 	}
 	
 	@GetMapping("")
-	public ResponseEntity<List<Product>> getAllProducts() throws EmptyDepositException{
+	public ResponseEntity<List<Product>> getAllProducts(){
 		List<Product> prods = depServ.getAllProducts();
 		boolean empty = prods.isEmpty();
-		if(empty) throw new EmptyDepositException("There are no items in the deposit");
+		if(empty) ResponseEntity.notFound().build();
 		return ResponseEntity.ok(prods);
 	}
 	
 	@GetMapping("/reserve-stock/{_id}")
-	public ResponseEntity<Boolean> checkReserveStock(@PathVariable ("_id") String _id) throws ProductException{
-		boolean allOk = depServ.checkReserveStock(_id);
-		if(!allOk) throw new ProductException("No item found for this id: " + _id);
-		return ResponseEntity.ok(allOk);
+	public ResponseEntity<List<String>> checkReserveStock(@PathVariable ("_id") String _id) throws ProductException{
+		List<String> msg = new ArrayList<String>();
+		try {
+			boolean allOk = depServ.checkReserveStock(_id);
+			if(allOk) {
+				msg.add("There is stock available");
+			}else msg.add("Low stock, it´s under the minimum reserve");
+			return ResponseEntity.ok().body(msg);
+		}catch(ProductException ex) {
+			msg.add(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(msg);
+		}
+		
 	}
 	
 	@GetMapping("/{name}")

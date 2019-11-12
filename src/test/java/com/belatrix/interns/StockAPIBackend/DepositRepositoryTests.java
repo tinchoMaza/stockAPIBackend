@@ -66,7 +66,7 @@ public class DepositRepositoryTests {
 	@Test
 	public final void testFindById_WhenTheProductDoesNotExist() {
 		Optional<Product> product = this.DepRepository.findById("5d9f4b875e8b3c272cc09074");
-		assertTrue("There is not any product with id 84", !product.isPresent());
+		assertTrue("There is not any product with id 5d9f4b875e8b3c272cc09074", !product.isPresent());
 	}
 	
 	@Test
@@ -107,7 +107,7 @@ public class DepositRepositoryTests {
 	
 	@Test
 	public final void testFindByName_WhenProductExists() {
-		Optional<Product> testProd = this.DepRepository.findByName("Hojas de impresion tamano A4");
+		Optional<Product> testProd = this.DepRepository.findByName("Municion Pistolas Nerf");
 		assertTrue("The product exists in the DB, so testProd should be present", testProd.isPresent());
 	}
 	
@@ -123,7 +123,7 @@ public class DepositRepositoryTests {
 		int errorCount = 0;
 		
 		Optional<Product> checkProd = this.DepRepository.saveProduct(testProd);
-		if(checkProd.get() != testProd) {
+		if(!checkProd.isPresent()) {
 			System.out.print("Error in save method");
 			errorCount++;
 		}
@@ -150,7 +150,7 @@ public class DepositRepositoryTests {
 	@Test
 	public final void testShowProductsWithLowStock() {
 		List<Product> lowStockProducts = this.DepRepository.showProductsWithLowStock();
-		assertTrue("There is no product with low stock in the db", lowStockProducts.isEmpty());
+		assertTrue("There are two products with low stock in the db", lowStockProducts.size() == 2);
 	}
 
 }
