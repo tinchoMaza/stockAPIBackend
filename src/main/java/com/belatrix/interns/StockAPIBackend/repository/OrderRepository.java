@@ -3,11 +3,15 @@ package com.belatrix.interns.StockAPIBackend.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.belatrix.interns.StockAPIBackend.dbo.OrderDBO;
 import com.belatrix.interns.StockAPIBackend.entities.Order;
 
 public interface OrderRepository {
 
-	public Optional<List<Order>> getAllOrders();
-	public Optional<Order> findById(String id);
-	public Order saveOrder(Order o);
+	public Optional<List<OrderDBO>> getAllOrders();
+	public Optional<OrderDBO> findById(String id);
+	public Optional<OrderDBO> saveOrder(Order o);
+	public Optional<OrderDBO> updateOrder(Order o);
+	public void deleteOrder(String _id);
+	public Optional<OrderDBO> findByNumber(int number);
 }

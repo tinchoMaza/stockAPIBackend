@@ -192,5 +192,7 @@ public class DepositServiceTests {
 		List<Product> lowStockProducts = this.depService.showProductsWithLowStock();
 		assertTrue("There is no product with low stock in the db", lowStockProducts.isEmpty());
 	}
+	
+	
 
 }

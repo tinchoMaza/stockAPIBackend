@@ -8,9 +8,9 @@ import com.belatrix.interns.StockAPIBackend.exceptions.EmployeeException;
 public interface EmployeeService {
 	
 	List<Employee> getAllEmployees();
-	Employee findById(String id) throws EmployeeException;
-	Employee findByName(String name) throws EmployeeException;
-	List<Employee> findByArea (String area) throws EmployeeException;
+	public Employee findById(String id) throws EmployeeException;
+	public Employee findByName(String name) throws EmployeeException;
+	public List<Employee> findByArea (String area) throws EmployeeException;
 	public Employee saveEmployee(Employee e);
 	public void deleteEmployee(String id);
 	public void updateEmployee(Employee e);

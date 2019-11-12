@@ -8,14 +8,12 @@ import java.util.Optional;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import com.belatrix.interns.StockAPIBackend.dbo.OrderDBO;
 import com.belatrix.interns.StockAPIBackend.entities.Order;
-import com.belatrix.interns.StockAPIBackend.entities.Status;
 
 @Repository
 public class OrderRepositoryImplem implements OrderRepository{
@@ -27,37 +25,45 @@ public class OrderRepositoryImplem implements OrderRepository{
 		this.mongoOp = mongoOperations;
 	}
 
-	public Optional<List<Order>> getAllOrders() {
-		LookupOperation lookupOperation = LookupOperation.newLookup().
-				from("products").
-				localField("orderedProducts").
-				foreignField("_id").
-				as("orderedProducts");
-		Aggregation aggregation = Aggregation.newAggregation(lookupOperation);
-		List<Order> results = mongoOp.aggregate(aggregation, "orders", Order.class).getMappedResults();
+	public Optional<List<OrderDBO>> getAllOrders() {
+		List<OrderDBO> results = mongoOp.find(new Query(), OrderDBO.class);
 		return Optional.ofNullable(results);
 	}
 	private int getLastNumber() {
-		Optional<List<Order>> aux = this.getAllOrders();
-		List<Order> orders = aux.get();
+		Optional<List<OrderDBO>> aux = this.getAllOrders();
+		List<OrderDBO> orders = aux.get();
 		int max = 0; //si no hay orders, devuelve 0
 		max = Collections.max(orders, Comparator.comparing(s -> s.getNumber())).getNumber(); //el primer getNumber es para comparar. Eso me devuelve el objeto completo y uso el segundo getNumber para tener el numero
 		return max;
 
 	}
 
-	public Order saveOrder(Order o) {
+	public Optional<OrderDBO> saveOrder(Order o) {
 		int number = this.getLastNumber();
 		o.setNumber(number+1);
-		o.setStatus(Status.On_Hold);
-		this.mongoOp.save(o);
-		return this.findById(o.getId()).get();
+		o.set_id(new ObjectId());
+		this.mongoOp.save(o.toDBO());
+		return this.findById(o.get_id().toHexString());
 	}
 
-	public Optional<Order> findById(String id) {
+	public Optional<OrderDBO> findById(String id) {
 		ObjectId _id = new ObjectId(id);
-		Order o = this.mongoOp.findOne(new Query(Criteria.where("_id").is(_id)), Order.class);
+		OrderDBO o = this.mongoOp.findOne(new Query(Criteria.where("_id").is(_id)), OrderDBO.class);
 		return Optional.ofNullable(o);
+	}
+	
+	public Optional<OrderDBO> findByNumber(int number) {
+		OrderDBO o = this.mongoOp.findOne(new Query(Criteria.where("number").is(number)), OrderDBO.class);
+		return Optional.ofNullable(o);
+	}
+
+	public Optional<OrderDBO> updateOrder(Order o) {
+		OrderDBO odb = this.mongoOp.save(o.toDBO());
+		return Optional.ofNullable(odb);
+	}
+
+	public void deleteOrder(String _id) {
+		this.mongoOp.findAndRemove(new Query(Criteria.where("_id").is(_id)), OrderDBO.class);
 	}
 
 }

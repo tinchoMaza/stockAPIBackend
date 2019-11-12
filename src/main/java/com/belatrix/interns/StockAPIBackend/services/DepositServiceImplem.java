@@ -16,6 +16,7 @@ import com.belatrix.interns.StockAPIBackend.exceptions.EmptyDepositException;
 import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.exceptions.ProductException;
 import com.belatrix.interns.StockAPIBackend.repository.DepositRepository;
+import com.belatrix.interns.StockAPIBackend.paramValidations.*;
 
 /**
  * @author fbalsas
@@ -25,6 +26,7 @@ import com.belatrix.interns.StockAPIBackend.repository.DepositRepository;
 public class DepositServiceImplem implements DepositService {
 
 	private DepositRepository depRepo;
+	private paramValidations valid;
 	
 	@Autowired
 	public DepositServiceImplem(DepositRepository depRepo) {
@@ -67,7 +69,7 @@ public class DepositServiceImplem implements DepositService {
 			messages.add("Invalid value for stock, it can´t be less than 0");
 		}
 		
-		if (prod.getMin_Reserve_Stock() < 0) {
+		if (prod.getMin_reserve_stock() < 0) {
 			messages.add("Invalid value for reserve stock, it can´t be less than 0");
 		}
 		
@@ -82,7 +84,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product findById(String id) throws ProductException {
-		if(descriptionContainsIllegalsCharacters(id)) throw new ProductException("No product stored for this id: " + id);
+		//if(valid.descriptionContainsIllegalsCharacters(id)) throw new ProductException("No product stored for this id: " + id);
 		Optional<Product> prod = depRepo.findById(id);
 		if(!prod.isPresent()) throw new ProductException("No product stored for this id: " + id);
 		return prod.get();
@@ -90,7 +92,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product findByName(String name) throws ProductException {
-		if(containsIllegalsCharacters(name)) throw new ProductException("There is no " + name + " in stock");
+		if(valid.containsIllegalsCharacters(name)) throw new ProductException("There is no " + name + " in stock");
 		Optional<Product> prod = depRepo.findByName(name);
 		if(!prod.isPresent()) throw new ProductException("There is no " + name + " in stock");
 		return prod.get();
@@ -98,7 +100,7 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public Product saveProduct(Product p) throws InvalidDataException{
-		List<String> errorMsgs = productFieldsValidator(p);
+		List<String> errorMsgs = valid.productFieldsValidator(p);
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
 		Optional<Product> checkProd = this.depRepo.saveProduct(p);
 		if(!Optional.ofNullable(checkProd).isPresent()) {
@@ -110,13 +112,13 @@ public class DepositServiceImplem implements DepositService {
 
 	@Override
 	public void deleteProduct(String id) throws ProductException {
-		if(descriptionContainsIllegalsCharacters(id) || !this.depRepo.findById(id).isPresent()) throw new ProductException("No product stored for this id: " +id);
+		if(valid.descriptionContainsIllegalsCharacters(id) || !this.depRepo.findById(id).isPresent()) throw new ProductException("No product stored for this id: " +id);
 		depRepo.deleteProduct(id);
 	}
 
 	@Override
 	public void updateProduct(String id, Product p) throws InvalidDataException{
-		List<String> errorMsgs = productFieldsValidator(p);
+		List<String> errorMsgs = valid.productFieldsValidator(p);
 		if(!errorMsgs.isEmpty()) throw new InvalidDataException(errorMsgs);
 		if(!Optional.ofNullable(this.depRepo.findById(id).get()).isPresent()) {
 			errorMsgs.add("Invalid id, cannot update this product with id: " + id);

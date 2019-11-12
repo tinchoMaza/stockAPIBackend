@@ -31,45 +31,46 @@ public class DepositRepositoryImplem implements DepositRepository{
 		this.mongoOp = mongoOperations;
 	}
 	
+	
 	/**
 	 * @author fbalsas
 	 */
 	@Override
 	public boolean checkReserveStock(Product producto) {
-		if(producto.getStock() > producto.getMin_Reserve_Stock()) return true;
+		if(producto.getStock() > producto.getMin_reserve_stock()) return true;
 		return false;
 	}
 
 	@Override
 	public Optional<List<Product>> getAllProducts() {
-		List<Product> prods = this.mongoOp.find(new Query(), Product.class);
+		List<Product> prods = this.mongoOp.find(new Query(), Product.class, "products");
 		return  Optional.ofNullable(prods);
 	}
 
 	@Override
 	public Optional<Product> findById(String id) {
 		ObjectId _id = new ObjectId(id);
-		Product product = this.mongoOp.findOne(new Query(Criteria.where("_id").is(_id)), Product.class);
+		Product product = this.mongoOp.findOne(new Query(Criteria.where("_id").is(_id)), Product.class, "products");
 	    return Optional.ofNullable(product);
 	}
 
 	@Override
 	public Optional<Product> findByName(String name) {
-		Product prod = this.mongoOp.findOne(new Query(Criteria.where("name").is(name)), Product.class);
+		Product prod = this.mongoOp.findOne(new Query(Criteria.where("name").is(name)), Product.class, "products");
 		return Optional.ofNullable(prod);
 	}
 
 	
 	@Override
 	public Optional<Product> saveProduct(Product p) {
-		this.mongoOp.save(p);
+		this.mongoOp.save(p, "products");
 		return findById(p.getId());
 	}
 
 	@Override
 	public void deleteProduct(String id) {
 		ObjectId _id = new ObjectId(id);
-		this.mongoOp.findAndRemove(new Query(Criteria.where("_id").is(_id)), Product.class);
+		this.mongoOp.findAndRemove(new Query(Criteria.where("_id").is(_id)), Product.class, "products");
 	}
 
 	
@@ -79,7 +80,7 @@ public class DepositRepositoryImplem implements DepositRepository{
 		p.setName(newProductInfo.getName());
 		p.setDescription(newProductInfo.getDescription());
 		p.setStock(newProductInfo.getStock());
-		p.setMin_Reserve_Stock(newProductInfo.getMin_Reserve_Stock());
+		p.setMin_reserve_stock(newProductInfo.getMin_reserve_stock());
 		this.mongoOp.save(p);
 	}
 

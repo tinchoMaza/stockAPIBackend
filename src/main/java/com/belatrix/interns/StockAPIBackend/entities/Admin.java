@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateOnHold;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @Document(collection = "admins")
@@ -67,8 +68,8 @@ public class Admin implements Serializable{
 	public String toString() {
 		String ordersId = "";
 		for(Order o: ordersToBuy) {
-			if(o.getStatus().equals(Status.On_Hold))
-				ordersId.concat(o.getId() + ", ");
+			if(o.getStatus().equals(new StateOnHold()))
+				ordersId.concat(o.get_id() + ", ");
 		}
 		return "Admin id: " + _id + ", name: " + name +", mail: " + ", orders id to buy: " + ordersId;
 	}

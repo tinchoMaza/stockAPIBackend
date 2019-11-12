@@ -1,14 +1,13 @@
-package com.belatrix.interns.StockAPIBackend.dto;
+package com.belatrix.interns.StockAPIBackend.dbo;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.belatrix.interns.StockAPIBackend.entities.Employee;
-import com.belatrix.interns.StockAPIBackend.entities.Order;
-import com.belatrix.interns.StockAPIBackend.entities.Product;
 import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateAccepted;
 import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateCancelled;
 import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateCompleted;
@@ -16,38 +15,40 @@ import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateInProcess;
 import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateOnHold;
 import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateOrder;
 import com.belatrix.interns.StockAPIBackend.entities.stateOrder.StateRejected;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-public class OrderDTO {
+@Document(collection = "orders")
+@JsonPropertyOrder({"_id", "number", "status", "id_employee", "orderedProducts", "arrival_date", "departure_date"})
 
-	private String _id;
+public class OrderDBO implements Serializable{
+
+	private static final long serialVersionUID = 7514981507162362478L;
+
+	@Id
+	private ObjectId _id;
 	private int number;
 	private String status;
-	private Employee employee;
-	private List<Product> orderedProducts;
+	private ObjectId id_employee;
+	private List<ObjectId> orderedProducts;
 	private Date arrival_date;
 	private Date departure_date;
 	
-	public OrderDTO(String _id, int number, String status, Employee employee, List<Product> orderedProducts,
+	public OrderDBO(ObjectId _id, int number, String status, ObjectId id_employee, List<ObjectId> orderedProducts,
 			Date arrival_date, Date departure_date) {
 		super();
 		this._id = _id;
 		this.number = number;
 		this.status = status;
-		this.employee = employee;
+		this.id_employee = id_employee;
 		this.orderedProducts = orderedProducts;
 		this.arrival_date = arrival_date;
 		this.departure_date = departure_date;
 	}
-	
-	public OrderDTO() {
-		super();
-		this.orderedProducts = new ArrayList<Product>();
-	}
 
-	public String get_id() {
+	public ObjectId get_id() {
 		return _id;
 	}
-	public void set_id(String _id) {
+	public void set_id(ObjectId _id) {
 		this._id = _id;
 	}
 	public int getNumber() {
@@ -62,16 +63,16 @@ public class OrderDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Employee getEmployee() {
-		return employee;
+	public ObjectId getId_employee() {
+		return id_employee;
 	}
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
+	public void setId_employee(ObjectId id_employee) {
+		this.id_employee = id_employee;
 	}
-	public List<Product> getOrderedProducts() {
+	public List<ObjectId> getOrderedProducts() {
 		return orderedProducts;
 	}
-	public void setOrderedProducts(List<Product> orderedProducts) {
+	public void setOrderedProducts(List<ObjectId> orderedProducts) {
 		this.orderedProducts = orderedProducts;
 	}
 	public Date getArrival_date() {
@@ -87,7 +88,7 @@ public class OrderDTO {
 		this.departure_date = departure_date;
 	}
 	
-	private StateOrder getStateOrderStatus() {
+	public StateOrder getStateOrderStatus() {
 		switch (status) {
 		case "ACCEPTED":
 			return new StateAccepted();
@@ -102,10 +103,6 @@ public class OrderDTO {
 		default:
 			return new StateInProcess();
 		}
-	}
-
-	public Order toDomain() {
-		return new Order(new ObjectId(_id), number, this.getStateOrderStatus(), employee, orderedProducts, arrival_date, departure_date);
 	}
 	
 }
