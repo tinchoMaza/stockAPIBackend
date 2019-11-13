@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.belatrix.interns.StockAPIBackend.entities.Employee;
+import com.belatrix.interns.StockAPIBackend.entities.Order;
 
 @Repository
 public class EmployeeRepositoryImplem implements EmployeeRepository {
@@ -66,6 +67,12 @@ public class EmployeeRepositoryImplem implements EmployeeRepository {
 	public Optional<Employee> findByMail(String mail) {
 		Employee e = this.mongoOp.findOne(new Query(Criteria.where("mail").is(mail)), Employee.class);
 		return Optional.ofNullable(e);
+	}
+
+	@Override
+	public Optional<List<Order>> inspectOrders(Employee e) {
+		List<Order> empOrders = this.mongoOp.find(new Query(Criteria.where("id_employee").is(e.getId())), Order.class);
+		return Optional.ofNullable(empOrders);
 	}
 
 }

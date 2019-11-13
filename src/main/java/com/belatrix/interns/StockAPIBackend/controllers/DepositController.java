@@ -70,7 +70,7 @@ public class DepositController {
 		
 	}
 	
-	@GetMapping("/{name}")
+	@GetMapping("/products/{name}")
 	public ResponseEntity<Product> findByName(@PathVariable String name) throws ProductException{
 			Product prod;
 		try {

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.belatrix.interns.StockAPIBackend.services.AdminService;
@@ -35,6 +37,12 @@ public class AdminController {
 	public AdminController(AdminService admServ) {
 		this.admServ = admServ;
 	}
+	
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String showLogin(ModelMap model) {
+		return "home";
+	}
+	
 	
 	@PostMapping("/")
 	public ResponseEntity<Serializable> save(@RequestBody @Valid Admin a){

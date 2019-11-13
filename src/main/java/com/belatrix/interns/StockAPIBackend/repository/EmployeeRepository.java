@@ -4,23 +4,26 @@ import java.util.List;
 import java.util.Optional;
 
 import com.belatrix.interns.StockAPIBackend.entities.Employee;
+import com.belatrix.interns.StockAPIBackend.entities.Order;
 
 public interface EmployeeRepository {
 	
-	Optional <List<Employee>> getAllEmployees();
+	public Optional <List<Employee>> getAllEmployees();
 	
-	Optional<Employee> findById(String id);
+	public Optional<Employee> findById(String id);
 	
-	Optional<Employee> findByName(String name);
+	public Optional<Employee> findByName(String name);
 	
-	Optional<List<Employee>> findByArea (String area);
+	public Optional<List<Employee>> findByArea (String area);
 	
-	Optional<Employee> findByMail(String mail);
+	public Optional<Employee> findByMail(String mail);
 	
 	public Employee saveEmployee(Employee e);
 	
 	public void deleteEmployee(String id);
 	
 	public void updateEmployee(String id, Employee e);
+	
+	public Optional<List<Order>> inspectOrders(Employee e);
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.belatrix.interns.StockAPIBackend.entities.Employee;
+import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.exceptions.EmployeeException;
 import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.repository.EmployeeRepository;
@@ -79,6 +80,16 @@ public class EmployeeServiceImplem implements EmployeeService {
 		Optional<Employee> e = empRepo.findByMail(mail);
 		if(e.isPresent()) return e.get();
 		throw new EmployeeException("Employee with mail: " + mail + " not found. Please try again");
+	}
+
+	@Override
+	public List<Order> inspectOrders(Employee e) throws Exception {
+		Optional<Employee> emp = this.empRepo.findById(e.getId());
+		if(!emp.isPresent()) throw new Exception("No such employee found in DB");
+		
+		Optional<List<Order>> ords = this.empRepo.inspectOrders(e);
+		if(!ords.isPresent() || ords.get().isEmpty()) throw new Exception("This employee has not made any order");
+		return ords.get();
 	}
 
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.belatrix.interns.StockAPIBackend.entities.Employee;
+import com.belatrix.interns.StockAPIBackend.entities.Order;
 import com.belatrix.interns.StockAPIBackend.exceptions.EmployeeException;
 import com.belatrix.interns.StockAPIBackend.exceptions.InvalidDataException;
 import com.belatrix.interns.StockAPIBackend.services.EmployeeService;
@@ -36,6 +39,12 @@ public class EmployeeController {
 	public EmployeeController(EmployeeService empService) {
 		this.empServ = empService;
 	}
+	
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String showLogin(ModelMap model) {
+		return "home";
+	}
+	
 	
 	@GetMapping("")
 	public ResponseEntity<List<Employee>> getAllEmployees() {
@@ -101,10 +110,20 @@ public class EmployeeController {
 	public ResponseEntity<String> deleteEmployee(@PathVariable String _id){
 		try {
 			empServ.deleteEmployee(_id);
-		} catch (InvalidDataException e) {
+		} catch (EmployeeException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("This employee cannot be found in database");
 		}
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/{_id}")
+	public ResponseEntity<List<Order>> inspectOrders(@RequestBody @Valid Employee e){
+		try {
+			List<Order> ords = this.empServ.inspectOrders(e);
+			return ResponseEntity.ok(ords);
+		}catch(Exception ex) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 }

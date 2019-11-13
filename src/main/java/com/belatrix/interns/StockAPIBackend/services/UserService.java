@@ -28,6 +28,11 @@ public class UserService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
+		/*
+		 * InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+		 * manager.createUser(User.withUsername("user").password("password").roles("USER").build());
+		 * return manager;
+		*/
 		List<GrantedAuthority> roles = new ArrayList<>();
 		Employee emp = this.empServ.findByMail(mail);
 		if(Optional.ofNullable(emp).isPresent()) {
